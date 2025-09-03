@@ -30,7 +30,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifiedCallback
   ) {
-    console.log("Google profile:", profile);
 
     const user = await this.auservice.valiateGoogleLogin(profile);
 

@@ -188,25 +188,20 @@ export class AuthService {
       throw new Error('Email not found in Google profile');
     }
 
-
     let user = await this.userRepo.findOne({ where: { email } });
-
-    if (!user) throw new Error("User not found");
-
-    const refreshToken = await this.generateRefreshToken(user.id)
 
     if (user) {
       return user;
     }
 
+    const { refreshToken } = await this.generateToken(profile.id);
+
 
     user = this.userRepo.create({
-
       email,
-      hashedRefreshToken: refreshToken,
+      refreshTokens: refreshToken,
       username: profile.id,
-      password: "123"
-
+      password: "123",
     });
 
     await this.userRepo.save(user);

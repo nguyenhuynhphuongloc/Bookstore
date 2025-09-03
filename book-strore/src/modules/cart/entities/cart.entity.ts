@@ -9,9 +9,7 @@ export class Cart {
   id: number;
 
  
-  @OneToOne(() => User, user => user.cart, { onDelete: 'CASCADE' })
-  @JoinColumn()
-  user: User;
+  
 
   @ManyToMany(() => Book, book => book.carts)
   @JoinTable({
@@ -23,4 +21,8 @@ export class Cart {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   totalPrice: number;
+
+  @OneToOne(() => User, (user) => user.cart, { onDelete: 'CASCADE' })
+  @JoinColumn() 
+  user: User;
 }

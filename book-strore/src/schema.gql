@@ -31,7 +31,9 @@ type Book {
 type Query {
   books: [Book!]!
   book(id: Int!): Book!
+  searchBooksByTitle(searchTerm: String!): [Book!]!
   booksByCategoryName(categoryName: String!, limit: Int): [Book!]!
+  getTopRatedBooks(limit: Int! = 15): [Book!]!
   booksByCategory(categoryName: String!, skip: Int! = 0, take: Int! = 10): [Book!]!
 }
 

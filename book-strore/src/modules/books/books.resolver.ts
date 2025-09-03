@@ -29,18 +29,31 @@ export class BooksResolver {
     return await this.booksService.update(updateBookInput.id, updateBookInput);
   }
 
+  @Query(() => [Book], { name: 'searchBooksByTitle' })
+  async searchBooksByTitle(@Args('searchTerm', { type: () => String }) searchTerm: string) {
+    return await this.booksService.searchByTitle({ searchTerm });
+  }
+
   @Mutation(() => Book)
   removeBook(@Args('id', { type: () => Int }) id: number) {
     return this.booksService.remove(id);
   }
 
   @Query(() => [Book], { name: 'booksByCategoryName' })
- async findByCategory(
+  async findByCategory(
     @Args('categoryName', { type: () => String }) categoryName: string,
     @Args('limit', { type: () => Int, nullable: true }) limit?: number,
   ) {
     return await this.booksService.GetByCategory({ categoryName, limit });
   }
+
+  @Query(() => [Book], { name: 'getTopRatedBooks' })
+  async getTopRatedBooks(
+    @Args('limit', { type: () => Int, defaultValue: 15 }) limit: number = 15,
+  ) {
+    return await this.booksService.getTopRatedBooks({ limit });
+  }
+
 
   @Query(() => [Book], { name: 'booksByCategory' })
   async Patrition(@Args() filter: FilterBooksArgs) {

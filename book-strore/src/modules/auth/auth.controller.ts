@@ -67,17 +67,17 @@ export class AuthController {
     const accessToken = await this.authService.generateAccesstoken(user.id)
 
 
-    const frontendCallbackUrl = process.env.FRONTEND_GOOGLE_CALLBACK_URL;
+    const frontendCallbackUrl = "http://localhost:3000/api/auth/google/callback";
     if (!frontendCallbackUrl) {
       throw new Error('FRONTEND_GOOGLE_CALLBACK_URL is not defined in environment variables');
     }
     const redirectUrl = new URL(frontendCallbackUrl);
 
     redirectUrl.searchParams.set('accessToken', accessToken);
-    redirectUrl.searchParams.set('refreshToken', user.hashedRefreshToken);
-    redirectUrl.searchParams.set('userId', user._id.toString());
-    redirectUrl.searchParams.set('name', `${user.firstName} ${user.lastName}`);
-    redirectUrl.searchParams.set('role', user.role);
+    redirectUrl.searchParams.set('refreshToken', user.hashedRefreshToken || '');
+    redirectUrl.searchParams.set('userId', user.id); 
+    redirectUrl.searchParams.set('name', user.username || 'Unknown User');
+    redirectUrl.searchParams.set('role', user.role || 'user');
 
     return res.redirect(redirectUrl.toString());
 

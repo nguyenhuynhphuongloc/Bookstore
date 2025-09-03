@@ -10,7 +10,7 @@ export class BooksService {
   constructor(
     @InjectRepository(Book)
     private readonly bookRepository: Repository<Book>,
-  ) {}
+  ) { }
 
   async create(createBookInput: CreateBookInput): Promise<Book> {
     const book = this.bookRepository.create(createBookInput);
@@ -38,28 +38,49 @@ export class BooksService {
     }
     return book;
   }
-   async findAll({ skip, take }: { skip?: number; take?: number } = {}) {
+  async findAll({ skip, take }: { skip?: number; take?: number } = {}) {
     return this.bookRepository.find({ skip, take });
   }
 
-  async Partition({ category, skip, take }: { category: string ; skip: number; take: number }) {
+  async Partition({ category, skip, take }: { category: string; skip: number; take: number }) {
     return this.bookRepository.find({
-      where: { categories:category }, 
+      where: { categories: category },
       skip,
       take,
     });
   }
 
   async GetByCategory({
-  categoryName,
-  limit,
-}: {
-  categoryName: string;
-  limit?: number;
-}) {
-  return this.bookRepository.find({
-    where: { categories: categoryName  }, 
-    take: limit, 
-  });
-}
+    categoryName,
+    limit,
+  }: {
+    categoryName: string;
+    limit?: number;
+  }) {
+    return this.bookRepository.find({
+      where: { categories: categoryName },
+      take: limit,
+    });
+  }
+
+  async searchByTitle({ searchTerm }: { searchTerm: string }): Promise<Book[]> {
+
+    const query = this.bookRepository.createQueryBuilder('book');
+
+    query.where('LOWER(book.title) LIKE :searchTerm', { searchTerm: `%${searchTerm.toLowerCase()}%` });
+
+    return query.getMany();
+
+  }
+
+  async getTopRatedBooks({ limit }: { limit: number }): Promise<Book[]> {
+
+    const query = this.bookRepository.createQueryBuilder('book');
+
+    query.where('book.average_rating IS NOT NULL')
+      .orderBy('book.average_rating', 'DESC')
+      .take(limit);
+
+    return query.getMany();
+  }
 }

@@ -26,7 +26,7 @@ export class Book {
   subtitle?: string;
 
   @Field(() => String)
-  @Column({ type: 'text' }) // để tránh bị tràn dữ liệu
+  @Column({ type: 'text' }) 
   authors: string;
 
   @Field(() => String, { nullable: true })
