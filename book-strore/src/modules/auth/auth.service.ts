@@ -15,6 +15,8 @@ import { Repository } from 'typeorm';
 import { User } from 'src/modules/users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MailService } from 'src/mails/mail.service';
+import { Cart } from 'src/modules/cart/entities/cart.entity';
+import { CartService } from 'src/modules/cart/cart.service';
 
 @Injectable()
 export class AuthService {
@@ -28,12 +30,17 @@ export class AuthService {
 
     @InjectRepository(User) private userRepo: Repository<User>,
 
+    @InjectRepository(User) private cartRepo: Repository<Cart>,
 
     @Inject(refreshjwtConfig.KEY) private refreshJwtConfig: ConfigType<typeof refreshjwtConfig>,
 
     @Inject(jwtConfig.KEY) private jwtConfigrulation: ConfigType<typeof jwtConfig>,
 
+    private readonly cartService: CartService,
+
     private mailService: MailService
+
+
 
   ) { }
 
@@ -194,10 +201,12 @@ export class AuthService {
       return user;
     }
 
+
     const { refreshToken } = await this.generateToken(profile.id);
 
 
-    user = this.userRepo.create({
+
+    user =  await this.userRepo.create({
       email,
       refreshTokens: refreshToken,
       username: profile.id,
@@ -206,8 +215,8 @@ export class AuthService {
 
     await this.userRepo.save(user);
 
-    console.log("Created Google user:", user);
-
+    await this.cartService.createCart(user.id);
+    
     return user;
 
   }
@@ -218,11 +227,11 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException("User not found");
 
-    if (!user.hashedRefreshToken) {
+    if (!user.refreshTokens) {
       throw new UnauthorizedException('No refresh token found for user');
     }
 
-    const refreshTokenMatch = await verify(user.hashedRefreshToken, refreshToken);
+    const refreshTokenMatch = await verify(user.refreshTokens, refreshToken);
 
     if (!refreshTokenMatch) throw new UnauthorizedException('Invalid Refresh Token')
 

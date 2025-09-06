@@ -1,28 +1,28 @@
-import { Book } from 'src/modules/books/entities/book.entity';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
+import { CartItem } from 'src/modules/cart/entities/cart.items';
 import { User } from 'src/modules/users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToMany, JoinTable, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column, OneToMany, Index } from 'typeorm';
 
-
+@ObjectType()   
 @Entity()
 export class Cart {
+  @Field(() => Int) 
   @PrimaryGeneratedColumn()
   id: number;
 
- 
-  
-
-  @ManyToMany(() => Book, book => book.carts)
-  @JoinTable({
-    name: 'cart_items',
-    joinColumn: { name: 'cartId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'bookId', referencedColumnName: 'id' },
-  })
-  books: Book[];
-
+  @Field(() => Float) 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   totalPrice: number;
 
+  @Field(() => User) 
   @OneToOne(() => User, (user) => user.cart, { onDelete: 'CASCADE' })
-  @JoinColumn() 
+  @JoinColumn()
+  @Index() 
   user: User;
+
+
+  @Field(() => [CartItem], { nullable: 'items' }) 
+  @OneToMany(() => CartItem, (item) => item.cart, { cascade: true })
+  items: CartItem[];
 }
+

@@ -3,14 +3,9 @@ import { Column } from 'typeorm';
 
 @InputType()
 export class CreateBookInput {
-  @Field(() => String)
-  isbn13: string;
-
-  @Field(() => String, { nullable: true })
-  isbn10?: string;
 
   @Field(() => String)
-  @Column({ type: 'text' }) // cho phép > 255 ký tự
+  @Column({ type: 'text' })
   title: string;
 
   @Field(() => String, { nullable: true })

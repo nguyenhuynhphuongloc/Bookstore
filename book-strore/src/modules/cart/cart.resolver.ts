@@ -1,35 +1,39 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 import { CartService } from './cart.service';
 import { Cart } from './entities/cart.entity';
 import { CreateCartInput } from './dto/create-cart.input';
 import { UpdateCartInput } from './dto/update-cart.input';
+import { CartItem } from 'src/modules/cart/entities/cart.items';
 
 @Resolver(() => Cart)
 export class CartResolver {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   @Mutation(() => Cart)
-  createCart(@Args('createCartInput') createCartInput: CreateCartInput) {
-    return this.cartService.create(createCartInput);
+  async createCart(
+    @Args('createCartInput') createCartInput: string,
+  ): Promise<Cart> {
+    return await this.cartService.createCart(createCartInput);
   }
 
-  @Query(() => [Cart], { name: 'cart' })
-  findAll() {
-    return this.cartService.findAll();
+  @Query(() => Cart)
+  async getCartByUser(
+    @Args('userId', { type: () => String }) userId: string,
+  ): Promise<Cart> {
+    return await this.cartService.getCartByUser(userId);
   }
 
-  @Query(() => Cart, { name: 'cart' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.cartService.findOne(id);
+  @Mutation(() => CartItem, { name: 'addCartItem' })
+  async addCartItem(
+    @Args('cartId', { type: () => ID, nullable: true }) cartId: string,
+    @Args('userId', { type: () => ID }) userId: string,
+    @Args('bookId', { type: () => ID }) bookId: string,
+    @Args('quantity', { type: () => Int, defaultValue: 1 }) quantity: number,
+  ) {
+    return await this.cartService.createCartItem(cartId, userId, bookId, quantity);
   }
 
-  @Mutation(() => Cart)
-  updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
-    return this.cartService.update(updateCartInput.id, updateCartInput);
-  }
 
-  @Mutation(() => Cart)
-  removeCart(@Args('id', { type: () => Int }) id: number) {
-    return this.cartService.remove(id);
-  }
+
+
 }

@@ -1,24 +1,16 @@
-import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
-import { Cart } from 'src/modules/cart/entities/cart.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { ObjectType, Field, Int, Float, ID } from '@nestjs/graphql';
+import { CartItem } from 'src/modules/cart/entities/cart.items';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @ObjectType()
 @Entity('books')
 export class Book {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  isbn13: string;
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  isbn10?: string;
+  @Field(() => ID)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field(() => String)
-  @Column({ type: 'text' }) // để tránh bị tràn dữ liệu
+  @Column({ type: 'text' }) 
   title: string;
 
   @Field(() => String, { nullable: true })
@@ -57,10 +49,14 @@ export class Book {
   @Column({ type: 'int', nullable: true })
   ratings_count?: number | null;
 
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float, { nullable: false })
   @Column({ type: 'float', nullable: true })
-  price?: number | null;
+  price: number;
 
-  @ManyToMany(() => Cart, cart => cart.books)
-  carts: Cart[];
+  @OneToMany(() => CartItem, (cartItem) => cartItem.book)
+  cartItems: CartItem[];
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
+  id_stripe?: string; 
 }

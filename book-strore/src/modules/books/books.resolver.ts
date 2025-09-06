@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 import { BooksService } from './books.service';
 import { Book } from './entities/book.entity';
 import { CreateBookInput } from './dto/create-book.input';
@@ -18,15 +18,17 @@ export class BooksResolver {
   async findAll() {
     return await this.booksService.findAll();
   }
-
-  @Query(() => Book, { name: 'book' })
-  async findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Book, { name: 'book', nullable: true })
+  async findOne(@Args('id', { type: () => ID }) id: string) {
+    if (!id) {
+      throw new Error('Book ID is required');
+    }
     return await this.booksService.findOne(id);
   }
 
   @Mutation(() => Book)
   async updateBook(@Args('updateBookInput') updateBookInput: UpdateBookInput) {
-    return await this.booksService.update(updateBookInput.id, updateBookInput);
+    return await this.booksService.update(updateBookInput.isbn10, updateBookInput);
   }
 
   @Query(() => [Book], { name: 'searchBooksByTitle' })
@@ -35,8 +37,15 @@ export class BooksResolver {
   }
 
   @Mutation(() => Book)
-  removeBook(@Args('id', { type: () => Int }) id: number) {
-    return this.booksService.remove(id);
+  removeBook(@Args('isbn10') isbn10: string) {
+    return this.booksService.remove(isbn10);
+  }
+
+  @Mutation(() => [Book])
+  async importBooksFromCSV(
+    @Args('filePath', { type: () => String }) filePath: string,
+  ) {
+    await this.booksService.importFromCSV(filePath);
   }
 
   @Query(() => [Book], { name: 'booksByCategoryName' })
@@ -63,5 +72,6 @@ export class BooksResolver {
       take: filter.take,
     });
   }
+
 
 }

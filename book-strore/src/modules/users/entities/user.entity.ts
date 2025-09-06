@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { RefreshToken } from 'src/modules/auth/entities/RefreshToken.entity';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
+import { Payment } from 'src/modules/Payment/entity/payment.entity';
 
 @ObjectType()
 @Entity()
@@ -25,9 +25,6 @@ export class User {
   @Column({ default: 'user' })
   role: string;
 
-  @Column({ type: 'text', nullable: true })
-  hashedRefreshToken: string | null;
-
   @Field({ nullable: true })  
   @Column({ nullable: true })
   avatarUrl?: string;
@@ -36,6 +33,9 @@ export class User {
   @Column({ nullable: true })
   refreshTokens: string;
 
-   @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
+  @OneToOne(() => Cart, (cart) => cart.user, { cascade: true })
   cart: Cart;
+
+  @OneToMany(() => Payment, payment => payment.user)
+  payments: Payment[];
 }

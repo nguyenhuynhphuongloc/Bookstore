@@ -75,7 +75,7 @@ export class UserService {
     const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException("User not found");
 
-    user.hashedRefreshToken = refreshToken;
+    user.refreshTokens = refreshToken ?? "";
 
     return this.userRepo.save(user);
 

@@ -1,57 +1,80 @@
-import { Controller, Post, Body, Inject, Get } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from 'src/modules/Payment/dto/create-payment.dto';
 import Stripe from 'stripe';
+import path from 'path';
+import { Repository } from 'typeorm';
+import { Book } from 'src/modules/books/entities/book.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 @Controller('payment')
 export class PaymentController {
 
 
   constructor(
     private readonly paymentService: PaymentService,
-    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe
-
+    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe,
+    @InjectRepository(Book) readonly bookRepository: Repository<Book>,
   ) { }
 
-  @Post('create-momo')
-  async create(@Body() amounts: CreatePaymentDto) {
+  @Post('products')
+  async createProduct(
+    @Body() body: {
+      name: string;
+      description: string;
+      price: number;
+      currency?: string;
+      interval?: 'day' | 'week' | 'month' | 'year';
+      image?: string;
+      metadata?: Record<string, string>;
+    },
+  ) {
+    const {
+      name,
+      description,
+      price,
+      currency = 'usd',
+      interval = 'month',
+      image,
+      metadata,
+    } = body;
 
-    return await this.paymentService.createMomo(amounts);
+    const product = await this.stripe.products.create({
+      name,
+      description,
+      active: true,
+      images: image ? [image] : [],
+      metadata: {
+        category: 'subscription',
+        ...metadata,
+      },
+      default_price_data: {
+        currency,
+        unit_amount: price,
+        recurring: { interval },
+      },
+    });
 
+    return {
+      message: 'Product created successfully',
+      product,
+    };
   }
+
 
   @Post('handler-payment')
   async handleMomoCallback(@Body() body: any) {
+
     const extraData = JSON.parse(Buffer.from(body.extraData, 'base64').toString());
+
     const userId = extraData.userId;
+
     const amount = body.amount;
-   
+
+
     return 1
   }
 
 
-  @Get('payments')
-  async createProduct() {
-    const product = await this.stripe.products.create({
-      name: 'Gold Plan',         
-      description: 'Access to premium content and features', 
-      active: true,                     
-      metadata: {
-        internalId: '12345',
-        category: 'subscription',
-      },
-      images: [
-        'https://yourdomain.com/assets/gold-plan.png',
-      ],
-      default_price_data: {
-        currency: 'usd',
-        unit_amount: 9900, 
-        recurring: {
-          interval: 'month', 
-        },
-      },
-    });
-    return product;
-  }
 
   @Post('create-customer')
   async createCustomer(@Body() body: { email: string; name?: string }) {
@@ -71,7 +94,7 @@ export class PaymentController {
         transfers: { requested: true },
         card_payments: { requested: true },
       },
-      business_type: 'individual', 
+      business_type: 'individual',
     });
 
     return account;
@@ -84,30 +107,43 @@ export class PaymentController {
       items: { productId: string; quantity: number }[];
     }
   ) {
-    const lineItems: Stripe.PaymentLinkCreateParams.LineItem[] = [];
+    return await this.paymentService.createPaymentLink(body.orderId,body.items);
+  }
 
-    for (const item of body.items) {
-      const product = await this.stripe.products.retrieve(item.productId);
+  @Post('update')
+  async updateStripeIdsForAllBooks() {
+  const books = await this.bookRepository.find(); 
 
-      if (!product.default_price) {
-        throw new Error(`Product ${item.productId} has no default price`);
+  for (const book of books) {
+    try {
+      const stripeProduct = await this.paymentService.getProductByTitle(book.title);
+
+      if (stripeProduct?.id) {
+        book.id_stripe = stripeProduct.id;
+        await this.bookRepository.save(book);
+        console.log(`✅ Updated book "${book.title}" with Stripe ID: ${stripeProduct.id}`);
+      } else {
+        console.log(`⚠️ No Stripe product found for "${book.title}"`);
       }
 
-      lineItems.push({
-        price: typeof product.default_price === 'string'
-          ? product.default_price
-          : product.default_price.id,
-        quantity: item.quantity,
-      });
+    } catch (err) {
+      console.error(`❌ Error updating "${book.title}":`, err.message);
     }
-
-    const paymentLink = await this.stripe.paymentLinks.create({
-      line_items: lineItems,
-      metadata: {
-        order_id: body.orderId, 
-      },
-    });
-
-    return { url: paymentLink.url };
   }
+
+  return { message: 'Stripe IDs updated for all books' };
+}
+
+  @Get('get-product-stripe')
+  async GetProdcutSpipe(@Body() body: {title: string}) {
+      return await this.paymentService.getProductByTitle(body.title)
+  }
+
+  @Get('products/import')
+  async importProducts() {
+   const filePath = "C:/Users/ASUS/Documents/GitHub/Bookstore/book-strore/src/modules/books/books-3.csv";
+    return await this.paymentService.importProductsFromFile(filePath);
+  }
+
+  
 }

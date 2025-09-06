@@ -1,64 +1,99 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import * as crypto from 'crypto';
-import { CreatePaymentDto } from 'src/modules/Payment/dto/create-payment.dto';
-
+import path from 'path';
+import * as fs from 'fs';
+import * as csv from 'csv-parser';
+import Stripe from 'stripe';
 
 @Injectable()
 export class PaymentService {
   constructor(
     private readonly httpService: HttpService,
-   
+    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe
+
   ) { }
 
-  async createMomo(amounts: CreatePaymentDto) {
-    const partnerCode = process.env.MOMO_PARTNER_CODE || 'MOMO';
-    const accessKey = process.env.MOMO_ACCESS_KEY || 'F8BBA842ECF85';
-    const secretKey = process.env.MOMO_SECRET_KEY || 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
+  async importProductsFromFile(filePath: string) {
+    const results: any[] = [];
 
-    const timestamp = Date.now();
-    const requestId = `${partnerCode}_${amounts.useId}_${timestamp}`;
-    const orderId = requestId;
-    const orderInfo = 'Nộp tiền vào ví điện tử của bạn';
-    const redirectUrl = 'http://localhost:3000/pages/homepage';
+    return new Promise((resolve, reject) => {
 
-  
-    const ipnUrl = `http://localhost:8080/payment/handler-payment`;
+      fs.createReadStream(filePath)
+        .pipe(csv({ mapHeaders: ({ header }) => header.toLowerCase().trim() }))
+        .on('data', (row) => results.push(row))
+        .on('end', async () => {
+          const createdProducts: Stripe.Response<Stripe.Product>[] = [];
 
-    const amount = amounts.amounts;
-    const requestType = 'captureWallet';
+          for (const row of results) {
+            console.log("Row from CSV:", row);
+            const product = await this.stripe.products.create({
+              name: row.title,
+              active: true,
+              images: row.thumbnail ? [row.thumbnail] : [],
+              default_price_data: {
+                currency: 'usd',
+                unit_amount: Number(row.price) * 100,
+              },
+            });
 
-    
-    const extraData = Buffer.from(JSON.stringify({ userId: amounts.useId })).toString('base64');
+            createdProducts.push(product);
+          }
 
-   
-    const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
+          resolve({
+            message: 'Products imported successfully',
+            count: createdProducts.length,
+            products: createdProducts,
+          });
+        })
+        .on('error', (err) => reject(err));
+    });
+  }
 
-    const signature = crypto.createHmac('sha256', secretKey).update(rawSignature).digest('hex');
+async getProductByTitle(title: string) {
+  const cleanTitle = title.trim();
 
-    const requestBody = {
-      partnerCode,
-      accessKey,
-      requestId,
-      orderId,
-      amount,
-      orderInfo,
-      redirectUrl,
-      ipnUrl,
-      extraData,
-      requestType,
-      signature,
-      lang: 'en',
-    };
+  const products = await this.stripe.products.search({
+    query: `name:"${cleanTitle}"`  // exact match
+  });
 
-    try {
-      const response = await firstValueFrom(this.httpService.post('https://test-payment.momo.vn/v2/gateway/api/create', requestBody));
-      return response.data.payUrl;
-    } catch (error) {
-      console.error('Lỗi khi tạo giao dịch Momo:', error.response?.data || error.message);
-      throw new Error('Không thể tạo giao dịch thanh toán Momo');
+  console.log("✅ Stripe returned:", products.data);
+
+  if (products.data.length === 0) {
+    return { message: 'No product found' };
+  }
+
+  return {
+    id: products.data[0].id
+  };
+}
+
+  async createPaymentLink(cardId: string, items: { productId: string; quantity: number }[]) {
+
+    const lineItems: Stripe.PaymentLinkCreateParams.LineItem[] = [];
+
+    for (const item of items) {
+      const product = await this.stripe.products.retrieve(item.productId);
+
+      if (!product.default_price) {
+        throw new Error(`Product ${item.productId} has no default price`);
+      }
+
+      lineItems.push({
+        price: typeof product.default_price === 'string'
+          ? product.default_price
+          : product.default_price.id,
+        quantity: item.quantity,
+      });
     }
+
+    const paymentLink = await this.stripe.paymentLinks.create({
+      line_items: lineItems,
+      metadata: {
+        card_id: cardId,
+      },
+    });
+
+    return { url: paymentLink.url };
   }
 
 

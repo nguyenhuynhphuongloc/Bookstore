@@ -64,6 +64,7 @@ export class AuthController {
 
     const user = req.user;
 
+
     const accessToken = await this.authService.generateAccesstoken(user.id)
 
 
@@ -74,7 +75,7 @@ export class AuthController {
     const redirectUrl = new URL(frontendCallbackUrl);
 
     redirectUrl.searchParams.set('accessToken', accessToken);
-    redirectUrl.searchParams.set('refreshToken', user.hashedRefreshToken || '');
+    redirectUrl.searchParams.set('refreshToken', user.refreshTokens || '');
     redirectUrl.searchParams.set('userId', user.id); 
     redirectUrl.searchParams.set('name', user.username || 'Unknown User');
     redirectUrl.searchParams.set('role', user.role || 'user');

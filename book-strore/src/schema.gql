@@ -11,10 +11,24 @@ type User {
   refreshTokens: String
 }
 
-type Book {
+type Cart {
   id: Int!
-  isbn13: String
-  isbn10: String
+  totalPrice: Float!
+  user: User!
+  items: [CartItem]!
+}
+
+type CartItem {
+  id: Int!
+  cart: Cart!
+  book: Book!
+  quantity: Int!
+  cartId: Int!
+  bookId: Int!
+}
+
+type Book {
+  id: ID!
   title: String!
   subtitle: String
   authors: String!
@@ -25,12 +39,14 @@ type Book {
   average_rating: Float
   num_pages: Int
   ratings_count: Int
-  price: Float
+  price: Float!
+  id_stripe: String
 }
 
 type Query {
+  getCartByUser(userId: String!): Cart!
   books: [Book!]!
-  book(id: Int!): Book!
+  book(id: ID!): Book
   searchBooksByTitle(searchTerm: String!): [Book!]!
   booksByCategoryName(categoryName: String!, limit: Int): [Book!]!
   getTopRatedBooks(limit: Int! = 15): [Book!]!
@@ -39,9 +55,12 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserDto!): User!
+  createCart(createCartInput: String!): Cart!
+  addCartItem(cartId: ID, userId: ID!, bookId: ID!, quantity: Int! = 1): CartItem!
   createBook(createBookInput: CreateBookInput!): Book!
   updateBook(updateBookInput: UpdateBookInput!): Book!
-  removeBook(id: Int!): Book!
+  removeBook(isbn10: String!): Book!
+  importBooksFromCSV(filePath: String!): [Book!]!
 }
 
 input CreateUserDto {
@@ -51,8 +70,6 @@ input CreateUserDto {
 }
 
 input CreateBookInput {
-  isbn13: String!
-  isbn10: String
   title: String!
   subtitle: String
   authors: String!
@@ -67,8 +84,6 @@ input CreateBookInput {
 }
 
 input UpdateBookInput {
-  isbn13: String
-  isbn10: String
   title: String
   subtitle: String
   authors: String
@@ -80,5 +95,5 @@ input UpdateBookInput {
   num_pages: Int
   ratings_count: Int
   price: Float
-  id: Int!
+  isbn10: Int!
 }

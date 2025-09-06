@@ -10,6 +10,7 @@ import { databaseConfig } from 'src/config/db.config';
 import { UserModule } from 'src/modules/users/users.module';
 import { MailModule } from 'src/mails/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { PaymentModule } from 'src/modules/Payment/payment.module';
 
 
 @Module({
@@ -26,7 +27,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     UserModule,
     BooksModule,
-    MailModule
+    MailModule,
+    PaymentModule
   ],
   controllers: [AppController],
   providers: [AppService],

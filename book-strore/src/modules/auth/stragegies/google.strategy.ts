@@ -12,7 +12,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
   constructor(
     @Inject(googleOuth.KEY) private googleConfig: ConfigType<typeof googleOuth>,
-    private readonly auservice: AuthService,
+    private readonly autservice: AuthService,
   ) {
     super({
       clientID: googleConfig.clientId,
@@ -31,9 +31,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     done: VerifiedCallback
   ) {
 
-    const user = await this.auservice.valiateGoogleLogin(profile);
+    const user = await this.autservice.valiateGoogleLogin(profile);
 
-    console.log("user", user)
 
     if (!user) {
       return done(new Error("User not found"), false);

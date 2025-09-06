@@ -2,6 +2,8 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { Book } from 'src/modules/books/entities/book.entity';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
+import { CartItem } from 'src/modules/cart/entities/cart.items';
+import { Payment } from 'src/modules/Payment/entity/payment.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 
 dotenv.config();
@@ -13,7 +15,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User, Cart, Book],
+  entities: [User, Cart, Book,CartItem,Payment],
   autoLoadEntities: true,
   synchronize: true,
 };
