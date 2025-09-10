@@ -20,7 +20,7 @@ export class BooksService {
 
 
   async findOne(id: string): Promise<Book | null> {
-    let book = await this.bookRepository.findOneBy({ id }); 
+    let book = await this.bookRepository.findOneBy({ id });
     console.log(book)
     return book
   }
@@ -55,16 +55,31 @@ export class BooksService {
 
   async GetByCategory({
     categoryName,
+    page,
     limit,
   }: {
     categoryName: string;
+    page?: number;
     limit?: number;
   }) {
-    return await this.bookRepository.find({
+    const take = limit ?? 10;
+    const skip = page && page > 0 ? (page - 1) * take : 0;
+
+    const [books, total] = await this.bookRepository.findAndCount({
       where: { categories: categoryName },
-      take: limit,
+      skip,
+      take,
     });
+
+    return {
+      data: books,
+      total,
+      totalPages: Math.ceil(total / take),
+      currentPage: page ?? 1,
+    };
   }
+
+
 
   async searchByTitle({ searchTerm }: { searchTerm: string }): Promise<Book[]> {
 
@@ -100,7 +115,7 @@ export class BooksService {
         .on('data', async (row) => {
           try {
             const input: CreateBookInput = {
-              title: row.title?.trim() || 'Untitled', 
+              title: row.title?.trim() || 'Untitled',
               subtitle: row.subtitle || null,
               authors: row.authors || 'Unknown',
               categories: row.categories || null,
@@ -123,7 +138,7 @@ export class BooksService {
         })
         .on('end', () => {
           console.log('CSV file successfully processed ✅');
-          resolve(results); 
+          resolve(results);
         })
         .on('error', (err) => reject(err));
     });

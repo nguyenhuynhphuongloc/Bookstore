@@ -1,16 +1,27 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import path from 'path';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
 import Stripe from 'stripe';
+import { Repository } from 'typeorm';
+import { Payment } from 'src/modules/Payment/entity/payment.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/modules/users/entities/user.entity';
+import { Cart } from 'src/modules/cart/entities/cart.entity';
 
 @Injectable()
 export class PaymentService {
   constructor(
-    private readonly httpService: HttpService,
-    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe
+    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe,
+    @InjectRepository(Payment)
+    private readonly paymentRes: Repository<Payment>,
+    @InjectRepository(User)
+    private readonly userRes: Repository<Payment>,
+    @InjectRepository(Cart)
+    private readonly cartRes: Repository<Cart>,
 
+    @InjectRepository(User) readonly UserRes: Repository<User>,
   ) { }
 
   async importProductsFromFile(filePath: string) {
@@ -49,39 +60,42 @@ export class PaymentService {
     });
   }
 
-async getProductByTitle(title: string) {
-  const cleanTitle = title.trim();
+  async getProductByTitle(title: string) {
+    const cleanTitle = title.trim();
 
-  const products = await this.stripe.products.search({
-    query: `name:"${cleanTitle}"`  // exact match
-  });
+    const products = await this.stripe.products.search({
+      query: `name:"${cleanTitle}"`
+    });
 
-  console.log("✅ Stripe returned:", products.data);
+    console.log(" Stripe returned:", products.data);
 
-  if (products.data.length === 0) {
-    return { message: 'No product found' };
+    if (products.data.length === 0) {
+      return { message: 'No product found' };
+    }
+
+    return {
+      id: products.data[0].id
+    };
   }
 
-  return {
-    id: products.data[0].id
-  };
-}
-
-  async createPaymentLink(cardId: string, items: { productId: string; quantity: number }[]) {
-
+  async createPaymentLink(
+    cardId: string,
+    items: { id_stripe: string; quantity: number }[],
+  ) {
     const lineItems: Stripe.PaymentLinkCreateParams.LineItem[] = [];
 
     for (const item of items) {
-      const product = await this.stripe.products.retrieve(item.productId);
+      const product = await this.stripe.products.retrieve(item.id_stripe);
 
       if (!product.default_price) {
-        throw new Error(`Product ${item.productId} has no default price`);
+        throw new Error(`Product ${item.id_stripe} has no default price`);
       }
 
       lineItems.push({
-        price: typeof product.default_price === 'string'
-          ? product.default_price
-          : product.default_price.id,
+        price:
+          typeof product.default_price === 'string'
+            ? product.default_price
+            : product.default_price.id,
         quantity: item.quantity,
       });
     }
@@ -89,12 +103,63 @@ async getProductByTitle(title: string) {
     const paymentLink = await this.stripe.paymentLinks.create({
       line_items: lineItems,
       metadata: {
-        card_id: cardId,
+        cart_id: cardId,
       },
     });
 
     return { url: paymentLink.url };
   }
 
+  
+  async storePayment(
+    cartId: string,
+    amount: number,
+    currency: string,
+    status: string,
+    stripePaymentId?: string,
+  ): Promise<Payment> {
+    
+    const cart = await this.userRes.findOne({
+      where: { id: cartId },
+    });
 
+   
+
+    const payment = this.paymentRes.create({
+      amount: amount,
+      currency: currency,
+      status: status,
+      stripePaymentId: stripePaymentId,
+      user:cart?.user
+    });
+
+    return await this.paymentRes.save(payment);
+
+  }
+
+  async createPayment(
+    userId: string,
+    amount: number,
+    currency: string,
+    status: string,
+    stripePaymentId: string,
+  ): Promise<Payment> {
+    const user = await this.userRes.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    const payment = await this.paymentRes.create({
+      user,
+      amount,
+      currency,
+      status,
+      stripePaymentId,
+    });
+
+    return await this.paymentRes.save(payment);
+  }
+  
 }
+

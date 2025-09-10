@@ -4,6 +4,7 @@ import { Book } from './entities/book.entity';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import { FilterBooksArgs } from 'src/modules/books/dto/fiterbook';
+import { PaginatedBooks } from 'src/modules/books/dto/pagnitation';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -73,5 +74,12 @@ export class BooksResolver {
     });
   }
 
-
+  @Query(() => PaginatedBooks, { name: 'booksByCategory' }) 
+  async booksByCategory(
+    @Args('categoryName', { type: () => String }) categoryName: string,
+    @Args('page', { type: () => Int, nullable: true }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ) {
+    return await this.booksService.GetByCategory({ categoryName, page, limit });
+  }
 }

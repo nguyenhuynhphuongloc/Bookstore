@@ -5,7 +5,6 @@ import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cart.items';
 import { User } from '../users/entities/user.entity';
 import { Book } from '../books/entities/book.entity';
-import { CreateCartInput } from 'src/modules/cart/dto/create-cart.input';
 
 @Injectable()
 export class CartService {
@@ -19,9 +18,9 @@ export class CartService {
   async getCartByUser(userId: string): Promise<Cart> {
 
     const cart = await this.cartRepo.findOne({
-    where: { user: { id: userId } },
-    relations: ['user', 'items', 'items.book'], 
-  });
+      where: { user: { id: userId } },
+      relations: ['user', 'items', 'items.book'],
+    });
 
     if (!cart) {
       throw new NotFoundException('Cart not found');
@@ -153,24 +152,20 @@ export class CartService {
 
   }
 
-  async removeAllItems(userId: string): Promise<void> {
+  async removeAllItems(cartId: string): Promise<void> {
+
     const cart = await this.cartRepo.findOne({
-      where: { user: { id: userId } },
-      relations: ['items', 'items.book'],
+      where: { id: Number(cartId) },
     });
 
-    if (!cart) {
-      throw new NotFoundException('Cart not found');
-    }
+    if (!cart) throw new NotFoundException('Cart not found');
 
-    if (cart.items && cart.items.length > 0) {
-      await this.cartItemRepo.remove(cart.items);
-    }
+    await this.cartItemRepo.delete({ cart: { id: Number(cartId) } });
 
     cart.totalPrice = 0;
+
     await this.cartRepo.save(cart);
+
   }
-
-
 
 }

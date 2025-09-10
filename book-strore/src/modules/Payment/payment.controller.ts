@@ -1,11 +1,11 @@
-import { Controller, Post, Body, Inject, Get, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Req, Res, BadRequestException } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { CreatePaymentDto } from 'src/modules/Payment/dto/create-payment.dto';
-import Stripe from 'stripe';
-import path from 'path';
+import Stripe from 'stripe'
 import { Repository } from 'typeorm';
 import { Book } from 'src/modules/books/entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CartService } from 'src/modules/cart/cart.service';
+import { User } from 'src/modules/users/entities/user.entity';
 @Controller('payment')
 export class PaymentController {
 
@@ -14,6 +14,8 @@ export class PaymentController {
     private readonly paymentService: PaymentService,
     @Inject('STRIPE_CLIENT') private readonly stripe: Stripe,
     @InjectRepository(Book) readonly bookRepository: Repository<Book>,
+    private readonly cartService: CartService,
+    @InjectRepository(User) readonly UserRes: Repository<User>,
   ) { }
 
   @Post('products')
@@ -60,22 +62,6 @@ export class PaymentController {
     };
   }
 
-
-  @Post('handler-payment')
-  async handleMomoCallback(@Body() body: any) {
-
-    const extraData = JSON.parse(Buffer.from(body.extraData, 'base64').toString());
-
-    const userId = extraData.userId;
-
-    const amount = body.amount;
-
-
-    return 1
-  }
-
-
-
   @Post('create-customer')
   async createCustomer(@Body() body: { email: string; name?: string }) {
     return this.stripe.customers.create({
@@ -103,47 +89,131 @@ export class PaymentController {
   @Post('create-payment-link')
   async createPaymentLink(
     @Body() body: {
-      orderId: string;
-      items: { productId: string; quantity: number }[];
+      cardId: string;
+      items: { id_stripe: string; quantity: number }[];
     }
   ) {
-    return await this.paymentService.createPaymentLink(body.orderId,body.items);
+    console.log(body)
+    return await this.paymentService.createPaymentLink(body.cardId, body.items);
   }
 
   @Post('update')
   async updateStripeIdsForAllBooks() {
-  const books = await this.bookRepository.find(); 
+    const books = await this.bookRepository.find();
 
-  for (const book of books) {
-    try {
-      const stripeProduct = await this.paymentService.getProductByTitle(book.title);
+    for (const book of books) {
+      try {
+        const stripeProduct = await this.paymentService.getProductByTitle(book.title);
 
-      if (stripeProduct?.id) {
-        book.id_stripe = stripeProduct.id;
-        await this.bookRepository.save(book);
-        console.log(`✅ Updated book "${book.title}" with Stripe ID: ${stripeProduct.id}`);
-      } else {
-        console.log(`⚠️ No Stripe product found for "${book.title}"`);
+        if (stripeProduct?.id) {
+          book.id_stripe = stripeProduct.id;
+          await this.bookRepository.save(book);
+          console.log(` Updated book "${book.title}" with Stripe ID: ${stripeProduct.id}`);
+        } else {
+          console.log(` No Stripe product found for "${book.title}"`);
+        }
+
+      } catch (err) {
+        console.error(`Error updating "${book.title}":`, err.message);
       }
-
-    } catch (err) {
-      console.error(`❌ Error updating "${book.title}":`, err.message);
     }
+
+    return { message: 'Stripe IDs updated for all books' };
   }
 
-  return { message: 'Stripe IDs updated for all books' };
-}
-
   @Get('get-product-stripe')
-  async GetProdcutSpipe(@Body() body: {title: string}) {
-      return await this.paymentService.getProductByTitle(body.title)
+  async GetProdcutSpipe(@Body() body: { title: string }) {
+    return await this.paymentService.getProductByTitle(body.title)
   }
 
   @Get('products/import')
   async importProducts() {
-   const filePath = "C:/Users/ASUS/Documents/GitHub/Bookstore/book-strore/src/modules/books/books-3.csv";
+    const filePath = "C:/Users/ASUS/Documents/GitHub/Bookstore/book-strore/src/modules/books/books-3.csv";
     return await this.paymentService.importProductsFromFile(filePath);
   }
 
+@Post('webhook')
+async handleWebhook(@Req() req: Request, @Res() res: Response) {
+  const sig = req.headers['stripe-signature'] as string;
+  let event: Stripe.Event;
+
+  try {
+   
+    event = this.stripe.webhooks.constructEvent(
+      req.body as unknown as Buffer,
+      sig,
+      'whsec_fd39cb93841c463629d1e6565fc9f0d2ab1e5005f86fbc01c4cbeb5d8bd94110'
+    );
+  } catch (err: any) {
+    console.error('Webhook signature verification failed:', err.message);
+    throw new BadRequestException(err.message);
+  }
+
+  console.log('Event type:', event.type);
+
+
+  switch (event.type) {
+   
+    case 'checkout.session.completed': {
+  const session = event.data.object as Stripe.Checkout.Session;
   
+  if(!session.metadata) throw new BadRequestException('No session object found in event data');
+
+  const cartId = session.metadata.cart_id;
+
+
+  const stripePaymentId = session.payment_intent as string;
+  const amount = session.amount_total;
+  const currency = session.currency ?? 'usd';
+  const status = session.payment_status;
+
+
+  const customerEmail = session.customer_details?.email;
+
+  if (customerEmail) {
+  
+    const user = await this.UserRes.findOne({
+      where: { email: customerEmail },
+    });
+
+    let amount = 1
+
+    if (user) {
+      await this.paymentService.storePayment(
+        cartId,
+        amount,
+        currency,
+        status,
+        stripePaymentId,
+      );
+      console.log(`✅ Payment saved for user ${user.email}`);
+    } else {
+      console.warn(`⚠️ No user found for email ${customerEmail}`);
+    }
+  }
+
+  
+  if (cartId) {
+    await this.cartService.removeAllItems(cartId);
+    console.log(`🛒 Cart ${cartId} cleared after payment`);
+  }
+
+  break;
+}
+
+    case 'payment_intent.payment_failed': {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      console.log('Payment failed:', paymentIntent.id);
+      break;
+    }
+
+    default:
+      console.log(`Unhandled event type: ${event.type}`);
+      
+  }
+
+  return res.json();
+}
+
+
 }

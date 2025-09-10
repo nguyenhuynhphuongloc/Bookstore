@@ -43,6 +43,13 @@ type Book {
   id_stripe: String
 }
 
+type PaginatedBooks {
+  data: [Book!]!
+  total: Int!
+  totalPages: Int!
+  currentPage: Int!
+}
+
 type Query {
   getCartByUser(userId: String!): Cart!
   books: [Book!]!
@@ -50,7 +57,7 @@ type Query {
   searchBooksByTitle(searchTerm: String!): [Book!]!
   booksByCategoryName(categoryName: String!, limit: Int): [Book!]!
   getTopRatedBooks(limit: Int! = 15): [Book!]!
-  booksByCategory(categoryName: String!, skip: Int! = 0, take: Int! = 10): [Book!]!
+  booksByCategory(categoryName: String!, page: Int, limit: Int): PaginatedBooks!
 }
 
 type Mutation {
