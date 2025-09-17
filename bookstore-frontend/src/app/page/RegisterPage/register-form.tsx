@@ -43,7 +43,7 @@ export function RegisterForm() {
 
     async function onSubmit(values: z.infer<typeof RegisterSchema>) {
         try {
-            const response = await axiosInstance.post('http://localhost:8080/auth/sign-up', values);
+            const response = await axiosInstance.post('http://localhost:8000/auth/sign-up', values);
 
             if (response.status === 201 || response.status === 200) {
                 toast.success("Đăng ký thành công! Bạn sẽ được chuyển hướng đến trang chính.");
@@ -161,7 +161,7 @@ export function RegisterForm() {
 
                 <div className="flex items-center justify-center gap-8 ">
                     <Button onClick={() => {
-                        window.location.href = 'http://localhost:8080/auth/google/login';
+                        window.location.href = 'http://localhost:8000/auth/google/login';
                     }}
                         className="bg-[#df4930] rounded-sm p-5 text-customelightWhite hover:bg-[#df4930] hover:shadow-none w-[450px] cursor-pointer">
                         Đăng nhập với Google

@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image"
 
-export function GetFreeBooks() {
+export default function GetFreeBooks() {
     return (
         <div className="w-full  bg-[#FFFFFF] mt-12 flex items-center gap-4  bg-gradient-to-r from-[#FFE5E5] via-[#F5FFFE] to-[#FFE5E5]">
 

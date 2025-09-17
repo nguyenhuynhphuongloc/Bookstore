@@ -1,7 +1,7 @@
 'use client'
 import BookSellBanner from "@/app/page/HomePage/components/BookSellBanner/page";
 import { CarouselDApiDemo } from "@/app/page/HomePage/components/Carousel/carousel"
-import { GetFreeBooks } from "@/app/page/HomePage/components/GetFreeBook/page";
+import GetFreeBooks from "@/app/page/HomePage/components/GetFreeBook/page";
 import Navbar from "@/app/page/HomePage/components/NavBar/page"
 import { NewReleaseBooks } from "@/app/page/HomePage/components/ReleasedBook/page";
 import Footer from "@/Shared/Footer/page";

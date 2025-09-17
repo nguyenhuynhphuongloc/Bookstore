@@ -12,7 +12,7 @@ export async function handeCredentialsSignin({ password, username, email, }:{
         const result = await signIn("credentials", {
             username,
             password,
-            redirect: false, // Nếu không muốn tự động redirect
+            redirect: false, 
         });
 
         return result;
