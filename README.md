@@ -1,63 +1,39 @@
-# 📚 Bookstore Online
+## Project : Online Bookstore Web (solo project)
 
-A modern web application for buying and managing books online.  
-Users can browse books by category, search and filter, add to cart, checkout, and track their orders.  
-Admins can manage books, categories, and customer orders.  
+- I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend
 
-This project follows a **RESTful API architecture** to ensure scalability, security, and clear separation between frontend and backend.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## General Use Case 
 
----
 
-## ✨ Features
 
-### User
-- Register and log in (JWT authentication with refresh token)
-- Browse and search books
-- Filter and sort by price, category, or rating
-- View detailed book information
-- Add books to the shopping cart and checkout
-- Manage profile and order history
+## Technology
 
-### Admin
-- Manage books (CRUD)
-- Manage categories
-- Manage orders
+# Backend
 
----
+Framework: NestJS (Node.js framework mạnh mẽ, kiến trúc module hóa, dễ mở rộng).
 
-## 🛠 Technology Stack
+Library: Express (NestJS mặc định chạy trên Express, có thể thay bằng Fastify).
 
-### Backend
-- **Language**: TypeScript  
-- **Framework**: NestJS  
-- **Database**: MongoDB  
-- **Libraries**: 
-  - `@nestjs/core`, `@nestjs/common`, `@nestjs/mongoose`, `@nestjs/typeorm`  
-  - `jsonwebtoken`, `bcrypt`  
-  - `class-validator`, `class-transformer`  
-  - `multer` (file upload)  
+Database: MySQL
 
-### Frontend
-- **Language**: TypeScript  
-- **Framework**: Next.js  
-- **Libraries**: React, Axios  
-- **UI**: Tailwind CSS, Shadcn/UI  
 
----
+# Frontend
 
-## 🗄 Database Design (MongoDB)
+Framework: Next.js (React framework, SSR/SSG).
 
-### Users
-```json
-{
-  "_id": ObjectId,
-  "email": "string",
-  "passwordHash": "string",
-  "firstName": "string",
-  "lastName": "string",
-  "role": "user | admin",
-  "phone": "string",
-  "address": "string",
-  "createdAt": "Date",
-  "updatedAt": "Date"
-}
+Styling: TailwindCSS + shadcn/ui (UI components).
+
+State Management: React Query
+
+# Others
+
+API Communication: GraphQL.
+
+Deployment: Docker
+
+
+##  Database Design (MongoDB)
+
+
+
