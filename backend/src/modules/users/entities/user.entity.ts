@@ -1,8 +1,19 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { Payment } from 'src/modules/Payment/entity/payment.entity';
 import { Comment } from 'src/modules/comment/entities/comment.entity';
+
+
+export enum UserStatus {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+}
+
+registerEnumType(UserStatus, {
+  name: 'UserStatus',
+  description: 'The status of a user',
+});
 
 @ObjectType()
 @Entity()
@@ -15,12 +26,21 @@ export class User {
   @Column({ unique: true })
   username: string;
 
+
   @Column()
   password: string;
 
   @Field()
   @Column({ unique: true })
   email: string;
+
+  @Field(() => UserStatus)
+  @Column({
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.ACTIVE,
+  })
+  status: UserStatus;
 
   @Field()
   @Column({ default: 'user' })

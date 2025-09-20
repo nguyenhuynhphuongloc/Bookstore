@@ -14,7 +14,7 @@ export class Inventory {
   book: Book;
 
   @Field(() => Int)
-  @Column()
+  @Column({ type: 'int', default: 0 })
   quantity: number;
 
   @Field(() => String)

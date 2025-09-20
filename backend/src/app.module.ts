@@ -16,10 +16,24 @@ import { LoggerMiddleware } from 'src/middleware/Logging-middleware';
 import { SearchHistory } from 'src/entities/search-history';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CommentModule } from 'src/modules/comment/comment.module';
-
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
+    }),
+
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 300, 
+    }),
+  
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -36,10 +50,6 @@ import { CommentModule } from 'src/modules/comment/comment.module';
     PaymentModule,
     NotificationModule,
     CommentModule,
-    CacheModule.register({
-      ttl: 60,
-      max: 100,
-    }),
     TypeOrmModule.forFeature([SearchHistory])
   ],
   controllers: [AppController],

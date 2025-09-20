@@ -1,13 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import path from 'path';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
 import Stripe from 'stripe';
 import { Repository } from 'typeorm';
 import { Payment } from 'src/modules/Payment/entity/payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/modules/users/entities/user.entity';
+import { User, UserStatus } from 'src/modules/users/entities/user.entity';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 
 @Injectable()
@@ -111,7 +109,7 @@ export class PaymentService {
       line_items: lineItems,
       metadata: {
         cart_id: cardId,
-        date :date
+        date: date
       },
     });
 
@@ -133,16 +131,17 @@ export class PaymentService {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
-    const payment = await this.paymentRes.create({
-      user,
+    const payment = this.paymentRes.create({
+      user: {
+        id: userId,
+        status: UserStatus.ACTIVE,
+      },
       amount,
       currency,
       status,
       stripePaymentId,
     });
-
     return await this.paymentRes.save(payment);
-
   }
 
 }

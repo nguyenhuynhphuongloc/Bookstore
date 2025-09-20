@@ -3,6 +3,9 @@ import { CommentService } from './comment.service';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
+import { Throttle } from '@nestjs/throttler';
+
+
 
 @Resolver(() => Comment)
 export class CommentResolver {
@@ -18,12 +21,13 @@ export class CommentResolver {
     return this.commentService.getCommentsByBook(bookId, skip, take);
   }
 
-@Mutation(() => Comment) 
-async AddComment(
-  @Args('createCommentInput') createCommentInput: CreateCommentInput,
-) {
-  return await this.commentService.create(createCommentInput);
-}
+  @Throttle({ default: { limit: 3, ttl: 60 } })
+  @Mutation(() => Comment)
+  async AddComment(
+    @Args('createCommentInput') createCommentInput: CreateCommentInput,
+  ) {
+    return await this.commentService.create(createCommentInput);
+  }
 
   @Query(() => [Comment], { name: 'replies' })
   async getRepliesByParent(

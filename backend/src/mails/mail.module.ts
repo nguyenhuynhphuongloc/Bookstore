@@ -1,9 +1,12 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { Module } from '@nestjs/common';
+import {  forwardRef, Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
-import {  ConfigService } from '@nestjs/config';
+import {   ConfigService } from '@nestjs/config';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { UserModule } from 'src/modules/users/users.module';
+
 
 @Module({
     imports: [
@@ -31,8 +34,13 @@ import {  ConfigService } from '@nestjs/config';
             }),
             inject: [ConfigService],
         }),
+        
+        forwardRef(() => AuthModule),
+        forwardRef(() => UserModule),
+       
     ],
     providers: [MailService],
+
     exports: [MailService],
 })
 export class MailModule { }

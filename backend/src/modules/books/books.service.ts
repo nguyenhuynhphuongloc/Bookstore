@@ -6,6 +6,7 @@ import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
+import { PaginatedBooks, PaginationInput } from 'src/interfaces/pagnition.interface';
 @Injectable()
 export class BooksService {
   constructor(
@@ -41,8 +42,22 @@ export class BooksService {
     }
     return book;
   }
-  async findAll({ skip, take }: { skip?: number; take?: number } = {}) {
-    return this.bookRepository.find({ skip, take });
+  
+  async findAll(pagination: PaginationInput): Promise<PaginatedBooks> {
+    const { page, limit } = pagination;
+
+    const [items, total] = await this.bookRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: ['inventories'], 
+    });
+
+    return {
+      items,
+      total,
+      page,
+      limit,
+    };
   }
 
   async Partition({ category, skip, take }: { category: string; skip: number; take: number }) {

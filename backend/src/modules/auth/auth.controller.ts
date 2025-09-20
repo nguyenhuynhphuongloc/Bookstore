@@ -1,4 +1,4 @@
-import { Controller, Request, Post, UseGuards, Get, Body, UseInterceptors, UploadedFiles, ParseFilePipeBuilder, Put, Req, UnauthorizedException, Res } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Get, Body, UseInterceptors, UploadedFiles, ParseFilePipeBuilder, Put, Req, UnauthorizedException, Res, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from 'src/modules/auth/dto/create-auth.dto';
@@ -9,12 +9,13 @@ import { ChangePasswordDto } from 'src/modules/auth/dto/change.passord.dto';
 import { GoogleGuard } from 'src/modules/auth/guards/google.guard';
 import { MailerService } from '@nestjs-modules/mailer/dist/mailer.service';
 import { Public } from 'src/decorator/custome';
+import { UserService } from 'src/modules/users/users.service';
 
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private Mailservice: MailerService) { }
+  constructor(private readonly authService: AuthService,private readonly userService: UserService) { }
 
 
   @Post('sign-up')
@@ -40,20 +41,26 @@ export class AuthController {
   }
 
 
-  @Put('change-password')
-  @UseGuards(AuthGuard)
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Request() req) {
+@Post('changePassword')
+async changePassword(
+  @Body() body: { email: string; newpassword: string; confirmpassword: string },
+) {
+  const { email, newpassword, confirmpassword } = body;
 
-    console.log(req.user);
-    const userId = req.user.sub
-
-    return await this.authService.changePassword(
-      userId,
-      changePasswordDto.oldPassword,
-      changePasswordDto.newPassword,
-    );
+  
+  if (newpassword !== confirmpassword) {
+    throw new BadRequestException('New password and confirm password do not match.');
   }
 
+
+  let user = this.userService.checkEmailExist(email);
+
+  if (!user) {
+    throw new BadRequestException('User not authenticated.');
+  }
+
+  return await this.authService.resetPassword(email, newpassword);
+}
   @UseGuards(GoogleGuard)
   @Get('google/login')
   async googleLogin() { }
@@ -76,7 +83,7 @@ export class AuthController {
 
     redirectUrl.searchParams.set('accessToken', accessToken);
     redirectUrl.searchParams.set('refreshToken', user.refreshTokens || '');
-    redirectUrl.searchParams.set('userId', user.id); 
+    redirectUrl.searchParams.set('userId', user.id);
     redirectUrl.searchParams.set('name', user.username || 'Unknown User');
     redirectUrl.searchParams.set('role', user.role || 'user');
 
@@ -88,6 +95,19 @@ export class AuthController {
   @Public()
   async Generate(@Body() body: { userId: string }) {
     return await this.authService.generateToken(body.userId);
+  }
+
+  @Post("ResetPassword")
+  @Public()
+  async ResetPassword(@Body() body: { email: string }) {
+    return await this.authService.ResetPassword(body.email);
+  }
+
+  @Post("checkPostcode")
+  @Public()
+  async checkPostcode(@Body() body: { email: string; postcode: string }) {
+    console.log(body)
+    return await this.authService.checkPostcode(body.email, body.postcode);
   }
 
 }

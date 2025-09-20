@@ -22,9 +22,16 @@ type User {
   id: ID!
   username: String!
   email: String!
+  status: UserStatus!
   role: String!
   avatarUrl: String
   refreshTokens: String
+}
+
+"""The status of a user"""
+enum UserStatus {
+  ACTIVE
+  INACTIVE
 }
 
 type Cart {
@@ -43,6 +50,13 @@ type CartItem {
   bookId: Int!
 }
 
+type Inventory {
+  id: ID!
+  book: Book!
+  quantity: Int!
+  location: String!
+}
+
 type Book {
   id: ID!
   title: String!
@@ -57,14 +71,22 @@ type Book {
   ratings_count: Int
   price: Float!
   id_stripe: String
+  inventories: [Inventory!]
   comments: [Comment!]
 }
 
 type PaginatedBooks {
-  data: [Book!]!
+  items: [Book!]!
   total: Int!
-  totalPages: Int!
-  currentPage: Int!
+  page: Int!
+  limit: Int!
+}
+
+type PaginatedUsers {
+  users: [User!]!
+  total: Int!
+  page: Int!
+  limit: Int!
 }
 
 type Notification {
@@ -78,10 +100,11 @@ type Notification {
 }
 
 type Query {
+  getAllUsers(page: Int! = 1, limit: Int! = 10): PaginatedUsers!
   getCartByUser(userId: String!): Cart!
   countCartItems(userId: String!): Int!
-  books: [Book!]!
   book(id: ID!): Book
+  books(pagination: PaginationInput): PaginatedBooks!
   searchBooksByTitle(searchTerm: String!): [Book!]!
   booksByCategoryName(categoryName: String!, limit: Int): [Book!]!
   getTopRatedBooks(limit: Int! = 15): [Book!]!
@@ -90,6 +113,11 @@ type Query {
   countNotifications(userId: String!): Int!
   getCommentsByBook(bookId: String!, skip: Int! = 0, take: Int! = 4): [Comment!]!
   replies(commentId: String!): [Comment!]!
+}
+
+input PaginationInput {
+  page: Int! = 1
+  limit: Int! = 10
 }
 
 type Mutation {

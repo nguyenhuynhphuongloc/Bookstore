@@ -22,34 +22,32 @@ import { CartItem } from 'src/modules/cart/entities/cart.items';
 import { CartService } from 'src/modules/cart/cart.service';
 import { CartModule } from 'src/modules/cart/cart.module';
 import { Book } from 'src/modules/books/entities/book.entity';
+import { UserService } from 'src/modules/users/users.service';
+import { MailModule } from 'src/mails/mail.module';
 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Blacklist,RefreshToken,Cart,CartItem,Book]),
+    TypeOrmModule.forFeature([User, Blacklist, RefreshToken, Cart, CartItem, Book]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshjwtConfig),
     ConfigModule.forFeature(googleOuth),
-    forwardRef(() => UserModule), 
-    forwardRef(() => BlacklistModule),  
-    forwardRef(() => CartModule),  
+    forwardRef(() => MailModule), 
+    forwardRef(() => UserModule),
+    forwardRef(() => BlacklistModule),
+    forwardRef(() => CartModule),
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
     JwtService,
-    MailService,
     CartService,
     BlacklistService,
     AuthGuard,
     GoogleStrategy,
     JwtStrategy,
   ],
-  exports: [
-    AuthService,
-    AuthGuard,
-    JwtModule,
-  ],
+  exports: [AuthService],
 })
 export class AuthModule {}

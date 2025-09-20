@@ -4,7 +4,8 @@ import { Book } from './entities/book.entity';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import { FilterBooksArgs } from 'src/modules/books/dto/fiterbook';
-import { PaginatedBooks } from 'src/modules/books/dto/pagnitation';
+
+import { PaginatedBooks, PaginationInput } from 'src/interfaces/pagnition.interface';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -15,10 +16,7 @@ export class BooksResolver {
     return await this.booksService.create(createBookInput);
   }
 
-  @Query(() => [Book], { name: 'books' })
-  async findAll() {
-    return await this.booksService.findAll();
-  }
+
   @Query(() => Book, { name: 'book', nullable: true })
   async findOne(@Args('id', { type: () => ID }) id: string) {
     if (!id) {
@@ -26,6 +24,15 @@ export class BooksResolver {
     }
     return await this.booksService.findOne(id);
   }
+
+  @Query(() => PaginatedBooks)
+  async books(
+    @Args('pagination', { type: () => PaginationInput, nullable: true })
+    pagination: PaginationInput = { page: 1, limit: 10 },
+  ) {
+    return this.booksService.findAll(pagination);
+  }
+
 
   @Mutation(() => Book)
   async updateBook(@Args('updateBookInput') updateBookInput: UpdateBookInput) {
@@ -74,7 +81,7 @@ export class BooksResolver {
     });
   }
 
-  @Query(() => PaginatedBooks, { name: 'booksByCategory' }) 
+  @Query(() => PaginatedBooks, { name: 'booksByCategory' })
   async booksByCategory(
     @Args('categoryName', { type: () => String }) categoryName: string,
     @Args('page', { type: () => Int, nullable: true }) page?: number,
@@ -83,5 +90,5 @@ export class BooksResolver {
     return await this.booksService.GetByCategory({ categoryName, page, limit });
   }
 
-  
+
 }

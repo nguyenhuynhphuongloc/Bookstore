@@ -64,10 +64,6 @@ export class UserService {
   }
 
 
-  async findAll(query: any) {
-   
-  }
-
   async updateHashedRefreshToken(
     userId: string,
     refreshToken: string | null,
@@ -138,6 +134,21 @@ export class UserService {
     if (!user) throw new NotFoundException("User not found");
     return this.userRepo.save(user);
   }
+
+  async findAll(page: number, limit: number) {
+  const [users, total] = await this.userRepo.findAndCount({
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  return {
+    users,
+    total,
+    page,
+    limit,
+  };
+}
+
 }
 
 
