@@ -1,6 +1,8 @@
 ## Project : Online Bookstore Web (solo project)
 
-- I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend
+- I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend.
+
+Key features in my project: 
 
 ---------------------------------------------------------------------------------------------------------------------------
 ## Bussines Context
@@ -13,11 +15,40 @@ Shopping Cart: Customers can add products to their cart either from the product 
 
 Payment Processing: The bookstore integrates with external payment services such as Stripe. When a customer completes a payment, order details, revenue, and billing information are securely stored in Stripe instead of the company’s internal database. This enhances data privacy and security. 
 
-Inventory Management: Administrators can monitor and manage the store’s inventory, ensuring that product availability is up to date. 
+Notification: When client complete successful payment process, system can inform some texts for client.
 
 Comments: Customers can post comments on product detail pages. Additionally, they can like and reply to existing comments, creating an interactive and engaging community experience. 
 
 Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##  Database Design (Mysql)
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## UI 
+
++ Login Page with Outh2 and bazer accesstoken
+![HomePage](./design/l)
+
++ Register Page
+![HomePage](./design/l)
+
++ Product catalog
+![HomePage](./design/l)
+
++ Shopping Cart
+![HomePage](./design/l)
+
++ Reset Password
+![HomePage](./design/l)
+
++ Notification
+![HomePage](./design/l)
+
+
 
 
 
@@ -46,8 +77,6 @@ API Communication: GraphQL.
 
 Deployment: Docker
 
-
-##  Database Design (MongoDB)
 
 
 
