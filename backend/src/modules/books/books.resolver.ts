@@ -53,7 +53,7 @@ export class BooksResolver {
   async importBooksFromCSV(
     @Args('filePath', { type: () => String }) filePath: string,
   ) {
-    await this.booksService.importFromCSV(filePath);
+    return await this.booksService.importFromCSV(filePath);
   }
 
   @Query(() => [Book], { name: 'booksByCategoryName' })
