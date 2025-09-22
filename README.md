@@ -50,12 +50,13 @@ Access Control: Both customers and administrators can login and register to the 
 
 + Detail Page
 
-![HomePage](./design/DetailPage)
+![HomePage](./design/DetailPage.png)
 
 + Review Book
-![HomePage](./design/Online Commet)
+![HomePage](./design/OnlineCommet.png)
 
-![HomePage](./design/DetailPage)
+![HomePage](./design/reply.png)
+
 + Product catalog
 ![HomePage](./design/Categories.png)
 
