@@ -16,15 +16,18 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartService } from 'src/modules/cart/cart.service';
 import { MailService } from 'src/mails/mail.service';
+import { Blacklist } from 'src/modules/Blacklist/entities/blacklist.entity';
 
 
 
 @Injectable()
 export class AuthService {
 
-private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
- private postcodeMap: Map<string, string> = new Map();
-   constructor(
+  private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
+
+  private postcodeMap: Map<string, string> = new Map();
+
+  constructor(
 
     @Inject(forwardRef(() => MailService))
     private Mailservice: MailService,
@@ -32,6 +35,8 @@ private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
     private readonly jwtService: JwtService,
 
     @InjectRepository(User) private userRepo: Repository<User>,
+
+    @InjectRepository(Blacklist) private BlackListrepo: Repository<Blacklist>,
 
     @Inject(jwtConfig.KEY) private jwtConfigrulation: ConfigType<typeof jwtConfig>,
 
@@ -124,9 +129,9 @@ private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
     return refressToken;
 
   }
-
-  async LogOut(userId: string) {
-    return await this.userService.updateHashedRefreshToken(userId, null)
+  async LogOut(accessToken: string) {
+    const token = this.BlackListrepo.create({ accessToken: accessToken });
+    return await this.BlackListrepo.save(token);
   }
 
 
@@ -156,10 +161,10 @@ private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
 
   }
 
-   async resetPassword(email,newPassword) {
+  async resetPassword(email, newPassword) {
 
     const user = await this.userRepo.findOne({ where: { email: email } })
-  
+
     if (!user) {
       throw Error("User not found")
     }
@@ -312,7 +317,7 @@ private timeoutMap: Map<string, NodeJS.Timeout> = new Map();
       clearTimeout(this.timeoutMap.get(email));
     }
 
-    
+
     this.postcodeMap.set(email, postcode);
 
     const timeout = setTimeout(() => {

@@ -11,12 +11,12 @@ export async function GET(req: NextRequest) {
   const name = searchParams.get("name");
   const Role = searchParams.get("role")
 
-  if (!accessToken || !userId || !name || !Role || !refreshToken) {
+  if (!accessToken || !userId || !name || !Role) {
     console.log(accessToken,refreshToken,userId,name,Role)
     return new Response("Missing parameters", { status: 400 });
   }
 
- 
+  if(refreshToken){
 
   await createSession({
     user: {
@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
     accessToken,
     refreshToken,
   });
+}
 
   return redirect("/page/HomePage"); 
 }

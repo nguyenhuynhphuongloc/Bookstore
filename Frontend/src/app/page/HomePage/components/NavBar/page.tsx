@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
 import Image from "next/image";
-import { deleteSession } from "@/lib/session";
 import { FaBell } from "react-icons/fa";
 import { FaRobot } from "react-icons/fa6";
 import { useQuery } from "@apollo/client/react";
@@ -19,6 +18,7 @@ import { COUNT_CART_ITEMS, COUNT_NOTIFICATIONS, GET_NOTIFICATIONS } from "@/app/
 import { Session } from "@/lib/type";
 import { useEffect, useRef, useState } from "react";
 import { CartCount, NotificationCount, NotificationData } from "@/app/types/types";
+import { logout } from "@/app/page/HomePage/functions/functions";
 
 export default function Navbar({ session }: { session: Session | null }) {
 
@@ -170,7 +170,7 @@ export default function Navbar({ session }: { session: Session | null }) {
                           <button
                             className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded"
                             onClick={() => {
-                              deleteSession();
+                              logout(session.accessToken)
                               router.push("/page/LoginPage");
                             }}
                           >
