@@ -42,21 +42,40 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/Register Page)
 
 + HomePage
-![HomePage](./design/HomePage1.pn)
+![HomePage](./design/HomePage1.png)
 
 ![HomePage](./design/HomePage2.png)
 
+![HomePage](./design/Footer)
+
++ Detail Page
+
+![HomePage](./design/Detail-Page)
+
 + Product catalog
-![HomePage](./design/HomePage)
+![HomePage](./design/Categories.png)
+
+![HomePage](./design/Library.png)
+
++Payment
+
+![HomePage](./design/payment.png)
+
+![HomePage](./design/sanbox.png)
 
 + Shopping Cart
 ![HomePage](./design/Panition)
 
-+ Reset Password
-![HomePage](./design/Footer)
-
-+ Notification
++ Cart
 ![HomePage](./design/Cart.png)
+
+![HomePage](./design/Cart2.png)
+
+
++ Admin
+![HomePage](./design/admin1.png)
+
+![HomePage](./design/admin2.png)  
 
 
 
