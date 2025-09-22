@@ -117,11 +117,11 @@ Deployment: Docker
 
 How to install
 
-Backend:Backend is building with NestJS, Express, Mysql. You need to open the folder "backend" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
+Backend is building with NestJS, Express, Mysql. You need to open the folder "backend" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
 
 ![HomePage](./design/backend.png)
 
-Fronted: Fronted is building with NextJS. You need to open the folder "fronted" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
+Fronted is building with NextJS. You need to open the folder "fronted" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
 
 ![HomePage](./design/fronted.png)
 
