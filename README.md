@@ -52,7 +52,7 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/Footer)
 
 + Notification
-![HomePage](./design/Cart)
+![HomePage](./design/Cart.png)
 
 
 
