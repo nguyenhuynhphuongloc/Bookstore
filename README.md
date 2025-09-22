@@ -2,8 +2,12 @@
 
 - I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend.
 
-Key features in my project: 
-
+Key features in my project
++  GraphQL API
++  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
++  Payment Integration (Stripe)
++  Security (Rate limiting, Input validation, Password hashing)
++  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
 ---------------------------------------------------------------------------------------------------------------------------
 ## Bussines Context
 
@@ -50,12 +54,13 @@ Access Control: Both customers and administrators can login and register to the 
 
 + Detail Page
 
-![HomePage](./design/DetailPage)
+![HomePage](./design/DetailPage.png)
 
 + Review Book
-![HomePage](./design/Online Commet)
+![HomePage](./design/OnlineCommet.png)
 
-![HomePage](./design/DetailPage)
+![HomePage](./design/reply.png)
+
 + Product catalog
 ![HomePage](./design/Categories.png)
 
