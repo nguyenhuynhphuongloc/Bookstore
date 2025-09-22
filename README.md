@@ -42,16 +42,20 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/Register Page)
 
 + HomePage
-![HomePage](./design/HomePage1.png)
+![HomePage](./design/Homepage1.png)
 
-![HomePage](./design/HomePage2.png)
+![HomePage](./design/Homepage2.png)
 
-![HomePage](./design/Footer)
+![HomePage](./design/Footer.png)
 
 + Detail Page
 
-![HomePage](./design/Detail-Page)
+![HomePage](./design/DetailPage)
 
++ Review Book
+![HomePage](./design/Online Commet)
+
+![HomePage](./design/DetailPage)
 + Product catalog
 ![HomePage](./design/Categories.png)
 
