@@ -43,7 +43,7 @@ Access Control: Both customers and administrators can login and register to the 
 
 
 + Register Page
-![HomePage](./design/Register Page)
+![HomePage](./design/RegisterPage.png)
 
 + HomePage
 ![HomePage](./design/Homepage1.png)
@@ -65,6 +65,8 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/Categories.png)
 
 ![HomePage](./design/Library.png)
+
+![HomePage](./design/Search.png)
 
 +Payment
 
