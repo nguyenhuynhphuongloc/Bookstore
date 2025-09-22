@@ -34,17 +34,17 @@ Access Control: Both customers and administrators can login and register to the 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## UI 
 
-+ Login Page with Outh2 and bazer accesstoken
++ Login and Register Page with Outh2 and bazer accesstoken
 ![HomePage](./design/LoginPage.png)
 
-+ Login Page with Outh2 and bazer accesstoken
-![HomePage](./design/Usecase)
-
-+ Login Page with Outh2 and bazer accesstoken
-![HomePage](./design/LoginPage)
 
 + Register Page
 ![HomePage](./design/Register Page)
+
++ HomePage
+![HomePage](./design/HomePage1.pn)
+
+![HomePage](./design/HomePage2.png)
 
 + Product catalog
 ![HomePage](./design/HomePage)
