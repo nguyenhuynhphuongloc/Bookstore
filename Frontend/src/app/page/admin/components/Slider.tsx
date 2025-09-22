@@ -14,17 +14,17 @@ import {
 const items = [
     {
         title: "Dashboard",
-        url: "localhost:3000/admin/products",
+        url: "http://localhost:3000/page/admin/dashboard",
         icon: Home,
     },
     {
         title: "Products",
-        url: "localhost:3000/admin/products",
+        url: "http://localhost:3000/page/admin/products",
         icon: Package,
     },
     {
         title: "Customers",
-        url: "localhost:3000/admin/customer",
+        url: "http://localhost:3000/page/admin/customers",
         icon: Users,
     },
 ]
@@ -34,12 +34,12 @@ export function AppSidebar() {
         <Sidebar>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel className="text-3xl">
+                    <SidebarGroupLabel className="text-3xl mt-12">
                         <Image
-                            src={"/default.jpg"}
+                            src={"/icon-shop.jpg"}
                             alt={"icon"}
-                            width={50}
-                            height={50}
+                            width={100}
+                            height={100}
                             className="rounded-md object-cover"
                         />
                     </SidebarGroupLabel>

@@ -76,7 +76,14 @@ type Book {
 }
 
 type PaginatedBooks {
-  items: [Book!]!
+  data: [Book!]!
+  total: Int!
+  totalPages: Int!
+  currentPage: Int!
+}
+
+type GetPaginatedBooks {
+  data: [Book!]!
   total: Int!
   page: Int!
   limit: Int!
@@ -104,7 +111,7 @@ type Query {
   getCartByUser(userId: String!): Cart!
   countCartItems(userId: String!): Int!
   book(id: ID!): Book
-  books(pagination: PaginationInput): PaginatedBooks!
+  books(pagination: PaginationInput): GetPaginatedBooks!
   searchBooksByTitle(searchTerm: String!): [Book!]!
   booksByCategoryName(categoryName: String!, limit: Int): [Book!]!
   getTopRatedBooks(limit: Int! = 15): [Book!]!

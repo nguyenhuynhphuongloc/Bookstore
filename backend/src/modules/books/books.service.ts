@@ -42,18 +42,19 @@ export class BooksService {
     }
     return book;
   }
-  
-  async findAll(pagination: PaginationInput): Promise<PaginatedBooks> {
+
+  async findAll(pagination) {
+
     const { page, limit } = pagination;
 
     const [items, total] = await this.bookRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
-      relations: ['inventories'], 
+      relations: ['inventories'],
     });
 
     return {
-      items,
+      data :items,
       total,
       page,
       limit,
@@ -93,6 +94,7 @@ export class BooksService {
       currentPage: page ?? 1,
     };
   }
+
 
 
 

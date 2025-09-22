@@ -85,7 +85,7 @@ export default function Library() {
 
                 <div className="w-full bg-white  p-5 h-1/3  flex items-center">
                     <h3 className="text-lg font-semibold text-customBlue mb-4 text-[#294563] mr-10">
-                        Thể loại sách
+                        Categories
                     </h3>
                     <ul className="space-y-4 flex">
                         {[
@@ -133,12 +133,12 @@ export default function Library() {
                     <PaginationContent className="gap-3 mb-4">
                         <PaginationItem>
                             <PaginationPrevious
-                                className="bg-blue-950 text-white hover:bg-customBlue border border-gray-300"
+                                className="bg-blue-950 text-white hover:bg-customBlue border border-gray-300 w-[90px] h-8 p-2"
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (page > 1) setPage((prev) => prev - 1);
-                                } } size={undefined}                            />
+                                } } size={300}                            />
                         </PaginationItem>
 
                         {Array.from({ length: 4 })
@@ -162,7 +162,7 @@ export default function Library() {
 
                         <PaginationItem>
                             <PaginationNext
-                                className="bg-blue-950 hover:bg-customBlue text-white border border-gray-300"
+                                className="bg-blue-950 hover:bg-customBlue text-white border border-gray-300 w-[90px] h-8 p-2"
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();

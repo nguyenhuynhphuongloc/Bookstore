@@ -38,7 +38,7 @@ export function LoginForm() {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-shrink-0 w-[600px] border-gray-300 rounded-lg p-6 bg-white ">
                 <div className="flex justify-center">
-                    <span className="text-[#294563] justify-center text-4xl font-sans">Login</span>
+                    <span className="text-white justify-center text-4xl font-sans">Login</span>
                 </div>
 
                 <FormField
@@ -83,7 +83,7 @@ export function LoginForm() {
                     )}
                 />
 
-                <Button className="!mt-5 w-full bg-[#2F70AF] text-customMintBlue hover:bg-customBlue hover:shadow-none cursor-pointer" type="submit">
+                <Button className="!mt-5 w-full bg-[#2F70AF] text-white hover:bg-customBlue hover:shadow-none cursor-pointer" type="submit">
                     Login
                 </Button>
 
@@ -105,7 +105,7 @@ export function LoginForm() {
                         console.log(backendUrl);
                         window.location.href = `${backendUrl}/auth/google/login`;
                     }}
-                        className="bg-[#df4930] rounded-sm p-5 text-customelightWhite hover:bg-[#df4930] hover:shadow-none w-[450px] point-cursor cursor-pointer">
+                        className="bg-[#df4930] rounded-sm p-5 text-white hover:bg-[#df4930] hover:shadow-none w-[450px] point-cursor cursor-pointer">
                         Login with Google
                     </Button>
                 </div>

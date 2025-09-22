@@ -5,7 +5,7 @@ import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import { FilterBooksArgs } from 'src/modules/books/dto/fiterbook';
 
-import { PaginatedBooks, PaginationInput } from 'src/interfaces/pagnition.interface';
+import { GetPaginatedBooks, PaginatedBooks, PaginationInput } from 'src/interfaces/pagnition.interface';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -25,12 +25,12 @@ export class BooksResolver {
     return await this.booksService.findOne(id);
   }
 
-  @Query(() => PaginatedBooks)
+  @Query(()=>GetPaginatedBooks )
   async books(
     @Args('pagination', { type: () => PaginationInput, nullable: true })
-    pagination: PaginationInput = { page: 1, limit: 10 },
+    pagination: { page: 1, limit: 10 },
   ) {
-    return this.booksService.findAll(pagination);
+    return await this.booksService.findAll(pagination);
   }
 
 

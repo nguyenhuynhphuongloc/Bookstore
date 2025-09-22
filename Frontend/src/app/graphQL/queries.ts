@@ -93,6 +93,7 @@ export const GET_BOOKS_BY_CATEGORY = gql`
 `;
 
 
+
 export const COUNT_CART_ITEMS = gql`
   query CountCartItems($userId: String!) {
     countCartItems(userId: $userId)
@@ -219,7 +220,7 @@ export const LIKE_COMMENT = gql`
 export const GET_ALL_BOOKS = gql`
   query GetAllBooks($page: Int, $limit: Int) {
     books(pagination: { page: $page, limit: $limit }) {
-      items {
+      data {
         id
         title
         authors
@@ -229,11 +230,12 @@ export const GET_ALL_BOOKS = gql`
         price
       }
       total
-      page
-      limit
+      page,
+      limit,
     }
   }
 `;
+
 
 
 export const GET_ALL_USERS = gql`

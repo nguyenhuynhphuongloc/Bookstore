@@ -16,7 +16,22 @@ export class PaginationInput {
 @ObjectType()
 export class PaginatedBooks {
   @Field(() => [Book])
-  items: Book[];
+  data: Book[];
+
+  @Field(() => Int)
+  total: number;
+
+  @Field(() => Int)
+  totalPages: number;
+
+  @Field(() => Int)
+  currentPage: number;
+}
+
+@ObjectType()
+export class GetPaginatedBooks {
+  @Field(() => [Book])
+  data: Book[];
 
   @Field(() => Int)
   total: number;

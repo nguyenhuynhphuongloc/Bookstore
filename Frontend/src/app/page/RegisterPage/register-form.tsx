@@ -106,7 +106,7 @@ export function RegisterForm() {
                 />
 
                 <Button
-                    className="!mt-5 w-full bg-[#2F70AF] text-customMintBlue hover:bg-customBlue hover:text-customMintBlue hover:shadow-none hover:brightness-100 cursor-pointer"
+                    className="!mt-5 w-full bg-[#2F70AF] text-white hover:bg-customBlue hover:text-customMintBlue hover:shadow-none hover:brightness-100 cursor-pointer"
                     type="submit"
                 >
                     Register
@@ -122,7 +122,7 @@ export function RegisterForm() {
                     <Button onClick={() => {
                         window.location.href = 'http://localhost:8000/auth/google/login';
                     }}
-                        className="bg-[#df4930] rounded-sm p-5 text-customelightWhite hover:bg-[#df4930] hover:shadow-none w-[450px] cursor-pointer">
+                        className="bg-[#df4930] rounded-sm p-5 text-white hover:bg-[#df4930] hover:shadow-none w-[450px] cursor-pointer">
                         Sign in with Google
                     </Button>
                 </div>

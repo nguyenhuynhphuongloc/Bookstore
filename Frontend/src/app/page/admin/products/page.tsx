@@ -14,7 +14,7 @@ import { useState } from "react";
 
 type BooksResponse = {
     books: {
-        items: Book[];
+        data: Book[];
         total: number;
         page: number;
         limit: number;
@@ -28,7 +28,7 @@ export default function ProductsPage() {
     const { data, loading, error } = useQuery<BooksResponse>(GET_ALL_BOOKS, {
         variables: { page, limit },
         fetchPolicy: "cache-and-network",
-    });
+    }); 
 
     if (loading && !data) {
         return <p className="p-6">Loading...</p>;
@@ -38,7 +38,7 @@ export default function ProductsPage() {
         return <p className="p-6 text-red-600">Error: {error.message}</p>;
     }
 
-    const books = data?.books.items ?? [];
+    const books = data?.books.data ?? [];
     const total = data?.books.total ?? 0;
     const totalPages = Math.ceil(total / limit);
 
