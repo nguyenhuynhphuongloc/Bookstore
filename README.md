@@ -23,15 +23,19 @@ Access Control: Both customers and administrators can login and register to the 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+## UseCase
+![HomePage](./design/Usecase.png)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##  Database Design (Mysql)
-![HomePage](./design/Database)
+![HomePage](./design/Database.png)
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## UI 
 
 + Login Page with Outh2 and bazer accesstoken
-![HomePage](./design/Database)
+![HomePage](./design/LoginPage.png)
 
 + Login Page with Outh2 and bazer accesstoken
 ![HomePage](./design/Usecase)
