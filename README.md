@@ -41,8 +41,6 @@ Access Control: Both customers and administrators can login and register to the 
 + Login and Register Page with Outh2 and bazer accesstoken
 ![HomePage](./design/LoginPage.png)
 
-
-+ Register Page
 ![HomePage](./design/RegisterPage.png)
 
 + HomePage
@@ -51,6 +49,15 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/Homepage2.png)
 
 ![HomePage](./design/Footer.png)
+
++ Product catalog
+![HomePage](./design/Categories.png)
+
+![HomePage](./design/Library.png)
+
+![HomePage](./design/Search.png)
+
+![HomePage](./design/Panition)
 
 + Detail Page
 
@@ -61,12 +68,10 @@ Access Control: Both customers and administrators can login and register to the 
 
 ![HomePage](./design/reply.png)
 
-+ Product catalog
-![HomePage](./design/Categories.png)
++ Cart
+![HomePage](./design/Cart.png)
 
-![HomePage](./design/Library.png)
-
-![HomePage](./design/Search.png)
+![HomePage](./design/Cart2.png)
 
 +Payment
 
@@ -74,13 +79,11 @@ Access Control: Both customers and administrators can login and register to the 
 
 ![HomePage](./design/sanbox.png)
 
-+ Shopping Cart
-![HomePage](./design/Panition)
++ Reset Passwrod
+  ![HomePage](./design/ResetPassword.png)
 
-+ Cart
-![HomePage](./design/Cart.png)
+  ![HomePage](./design/EmailResetPassword.png)
 
-![HomePage](./design/Cart2.png)
 
 
 + Admin
