@@ -31,22 +31,28 @@ Access Control: Both customers and administrators can login and register to the 
 ## UI 
 
 + Login Page with Outh2 and bazer accesstoken
-![HomePage](./design/l)
+![HomePage](./design/Database)
+
++ Login Page with Outh2 and bazer accesstoken
+![HomePage](./design/Usecase)
+
++ Login Page with Outh2 and bazer accesstoken
+![HomePage](./design/LoginPage)
 
 + Register Page
-![HomePage](./design/l)
+![HomePage](./design/Register Page)
 
 + Product catalog
-![HomePage](./design/l)
+![HomePage](./design/HomePage)
 
 + Shopping Cart
-![HomePage](./design/l)
+![HomePage](./design/Panition)
 
 + Reset Password
-![HomePage](./design/l)
+![HomePage](./design/Footer)
 
 + Notification
-![HomePage](./design/l)
+![HomePage](./design/Cart)
 
 
 
