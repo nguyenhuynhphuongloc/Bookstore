@@ -34,7 +34,23 @@ export default function CommentItem({ comment, bookId, currentUserId }: PropsCom
                     <div className="flex justify-between">
                         <p className="font-semibold text-blue-950">{comment.user.email}</p>
                     </div>
-                    <p className="text-sm text-black mt-2">{comment.content}</p>
+
+                    <div className='flex items-center space-x-2 mt-2'>
+                        <p className="text-sm text-black ">{comment.content}</p>
+
+                        {comment.sentiment && (
+                            <span
+                                className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${comment.sentiment === "positive"
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-red-100 text-red-700"
+                                    }`}
+                            >
+                                {comment.sentiment}
+                            </span>
+                        )}
+
+                    </div>
+                  
 
                     <div className="flex gap-2 mt-4 items-center ">
                         {comment.user.id === currentUserId && (

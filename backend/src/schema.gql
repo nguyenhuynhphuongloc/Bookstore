@@ -11,6 +11,9 @@ type Comment {
   replies: [Comment!]
   book: Book!
   user: User!
+
+  """Sentiment of comment: positive or negative"""
+  sentiment: String
 }
 
 """

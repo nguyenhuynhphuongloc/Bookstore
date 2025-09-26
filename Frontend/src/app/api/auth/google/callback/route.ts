@@ -3,10 +3,11 @@ import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
+
   const { searchParams } = new URL(req.url);
 
   const accessToken = searchParams.get("accessToken");
-  const refreshToken = searchParams.get("refreshToken");
+  let refreshToken = searchParams.get("refreshToken");
   const userId = searchParams.get("userId");
   const name = searchParams.get("name");
   const Role = searchParams.get("role")
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
     return new Response("Missing parameters", { status: 400 });
   }
 
-  if(refreshToken){
+  if(!refreshToken) refreshToken="key";
 
   await createSession({
     user: {
@@ -27,7 +28,6 @@ export async function GET(req: NextRequest) {
     accessToken,
     refreshToken,
   });
-}
 
   return redirect("/page/HomePage"); 
 }

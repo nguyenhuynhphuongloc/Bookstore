@@ -47,5 +47,9 @@ export class Comment {
   @Column({ type: 'simple-json', nullable: true })
   likeUsers: string[] = [];
 
+  @Field(() => String, { nullable: true, description: 'Sentiment of comment: positive or negative' })
+  @Column({ type: 'varchar', nullable: true })
+  sentiment?: string;
+
 
 }

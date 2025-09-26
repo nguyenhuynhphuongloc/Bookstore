@@ -22,6 +22,8 @@ import { logout } from "@/app/page/HomePage/functions/functions";
 
 export default function Navbar({ session }: { session: Session | null }) {
 
+  console.log(session)
+
   const router = useRouter();
   const bellRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);

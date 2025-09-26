@@ -29,6 +29,7 @@ export interface CommentType {
     id: string;
     content: string;
     user: User;
+    sentiment:string,
     likes: number;
     replies: CommentType[];
     parentId?: string | null;

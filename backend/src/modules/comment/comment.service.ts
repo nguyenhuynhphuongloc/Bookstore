@@ -6,6 +6,8 @@ import { IsNull, Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { Book } from 'src/modules/books/entities/book.entity';
+import axios from 'axios';
+
 @Injectable()
 export class CommentService {
 
@@ -45,11 +47,27 @@ export class CommentService {
       parent = foundParent;
     }
 
-    const comment = await this.commentRepo.create({
+    let prediction = null;
+    try {
+      const response = await axios.post('http://localhost:5000/predict', {
+        comment: content,
+        model_type: 'bow',
+      });
+
+
+      prediction = response.data.prediction;
+    } catch (err) {
+      console.error('Failed to call prediction API:', err.message);
+    }
+
+
+
+    const comment = this.commentRepo.create({
       content,
       user,
       book,
       parent,
+      sentiment: prediction == 1 ? "positive" : "negative",
     });
 
     await this.commentRepo.save(comment);
@@ -123,39 +141,39 @@ export class CommentService {
 
   async likeComment(commentId: string, userId: string) {
 
-      const comment = await this.commentRepo.findOneBy({ id: commentId });
+    const comment = await this.commentRepo.findOneBy({ id: commentId });
 
-      if (!comment) throw new Error('Comment not found');
+    if (!comment) throw new Error('Comment not found');
 
-      console.log(comment.likeUsers)
+    console.log(comment.likeUsers)
 
-      const index = comment.likeUsers.findIndex(id => id === userId);
+    const index = comment.likeUsers.findIndex(id => id === userId);
 
-      const count = comment.likeUsers.filter(id => id == userId).length;
+    const count = comment.likeUsers.filter(id => id == userId).length;
 
-      if (count > 0){
+    if (count > 0) {
 
-        comment.likes = Math.max(0, comment.likes - 1);
+      comment.likes = Math.max(0, comment.likes - 1);
 
-        comment.likeUsers.splice(index, 1);
+      comment.likeUsers.splice(index, 1);
 
-        
-        await this.commentRepo.save(comment);
 
-        return comment;
+      await this.commentRepo.save(comment);
 
-      }
+      return comment;
 
-      else {
-        
-        comment.likes = comment.likes + 1;
+    }
 
-        comment.likeUsers.push(userId);
+    else {
 
-        await this.commentRepo.save(comment);
+      comment.likes = comment.likes + 1;
 
-        return  comment;
-      }
+      comment.likeUsers.push(userId);
+
+      await this.commentRepo.save(comment);
+
+      return comment;
+    }
 
   }
 

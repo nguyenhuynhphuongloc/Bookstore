@@ -13,6 +13,7 @@ interface Props {
 
 interface Comment {
     id: string;
+    sentiment:string,
 }
 
 interface GetCommentsByBookData {

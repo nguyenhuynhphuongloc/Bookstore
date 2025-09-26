@@ -143,6 +143,7 @@ export const GET_COMMENTS_BY_BOOK = gql`
       id
       content
       likes
+      sentiment
       user {
         id
         email
@@ -179,6 +180,7 @@ export const ADD_COMMENT = gql`
       id
       content
       likes
+      sentiment   
       user {
         id
         email
