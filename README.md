@@ -4,10 +4,12 @@
 
 Key features in my project
 +  GraphQL API
++  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
 +  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
 +  Payment Integration (Stripe)
 +  Security (Rate limiting, Input validation, Password hashing)
 +  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
+
 ---------------------------------------------------------------------------------------------------------------------------
 ## Bussines Context
 
@@ -63,7 +65,7 @@ Access Control: Both customers and administrators can login and register to the 
 
 ![HomePage](./design/DetailPage.png)
 
-+ Review Book
++ Review Book ( Apply to machine learning to analyze sentiment of buyers ) 
 ![HomePage](./design/OnlineCommet.png)
 
 ![HomePage](./design/reply.png)
