@@ -66,7 +66,7 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/DetailPage.png)
 
 + Review Book ( Apply to machine learning to analyze sentiment of buyers ) 
-![HomePage](./design/OnlineCommet.png)
+![HomePage](./design/onlineCommet.png)
 
 ![HomePage](./design/reply.png)
 
