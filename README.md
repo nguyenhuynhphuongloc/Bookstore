@@ -122,7 +122,7 @@ API Communication: GraphQL.
 
 Deployment: Docker
 
-How to install
+# How to install and setup
 
 Backend is building with NestJS, Express, Mysql. You need to open the folder "backend" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
 
