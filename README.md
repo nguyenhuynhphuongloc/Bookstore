@@ -1,8 +1,25 @@
-## Project : Online Bookstore Web (solo project)
+## Table of Contents
+- 1. Overview
+- 2. TechStack
+- 3. Core Functions 
+- 3. UI
+- 4. Set up and install
 
-- I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend.
+----------------------------------------------------------------------------------------------------------------------------
+2. Tech Stack
+Frontend: React, React Router, Axios, Tailwind/CSS
+Backend: Node.js, Express.js
+Database: MongoDB Atlas (Mongoose)
+Auth: JWT & bcrypt
+Realtime: Socket.IO
+Payments: Stripe
+Notifications: Twilio (SMS), Resend (Email)
+Containerization: Docker Compose
+Orchestration: Kubernetes (YAML manifests)
+API Docs: Swagger (Payment Service)
 
-## Key features in my project
+
+--------------------------------------------------------------------------------------------------------------------------
 +  GraphQL API
 +  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
 +  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
