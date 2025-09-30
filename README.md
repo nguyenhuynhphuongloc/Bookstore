@@ -2,7 +2,7 @@
 
 - I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend.
 
-Key features in my project
+## Key features in my project
 +  GraphQL API
 +  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
 +  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
@@ -66,7 +66,7 @@ Access Control: Both customers and administrators can login and register to the 
 ![HomePage](./design/DetailPage.png)
 
 + Review Book ( Apply to machine learning to analyze sentiment of buyers ) 
-![HomePage](./design/onlineCommet.png)
+![HomePage](./design/OnlineComment.png)
 
 ![HomePage](./design/reply.png)
 
@@ -122,7 +122,7 @@ API Communication: GraphQL.
 
 Deployment: Docker
 
-How to install
+# How to install and setup
 
 Backend is building with NestJS, Express, Mysql. You need to open the folder "backend" and run 'npm install' to install all dependencies. After that run 'npm run dev'. Notely, you need to justify .env in project
 
