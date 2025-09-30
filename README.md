@@ -1,34 +1,13 @@
 ## Table of Contents
-- 1. Overview
-- 2. TechStack
-- 3. Core Functions 
-- 3. UI
-- 4. Set up and install
+- # Overview
+- # TechStack
+- # Core Functions 
+- # UI
+- # Set up and install
 
 ----------------------------------------------------------------------------------------------------------------------------
-2. Tech Stack
-Frontend: React, React Router, Axios, Tailwind/CSS
-Backend: Node.js, Express.js
-Database: MongoDB Atlas (Mongoose)
-Auth: JWT & bcrypt
-Realtime: Socket.IO
-Payments: Stripe
-Notifications: Twilio (SMS), Resend (Email)
-Containerization: Docker Compose
-Orchestration: Kubernetes (YAML manifests)
-API Docs: Swagger (Payment Service)
 
-
---------------------------------------------------------------------------------------------------------------------------
-+  GraphQL API
-+  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
-+  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
-+  Payment Integration (Stripe)
-+  Security (Rate limiting, Input validation, Password hashing)
-+  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
-
----------------------------------------------------------------------------------------------------------------------------
-## Bussines Context
+# Overview
 
 The Bookstore Website provides the following core functionalities: Product Catalog, Shopping Cart, Payment Processing, Comments, Notifications, and Access Control. 
 
@@ -42,7 +21,30 @@ Notification: When client complete successful payment process, system can inform
 
 Comments: Customers can post comments on product detail pages. Additionally, they can like and reply to existing comments, creating an interactive and engaging community experience. 
 
-Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot. 
+Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot.
+
+-----------------------------------------------------------------------------------------------------------------------------
+# Tech Stack
+Frontend: Nextjs(React), React Router, Axios, Tailwind/CSS
+Backend: Node.js, Express.js, Nestjs
+Database: MYSQL
+Auth: JWT & bcrypt & OUTH2
+Realtime: Socket.IO
+Payments: Stripe
+Notifications: Resend (Email)
+Containerization: Docker Compose
+
+
+--------------------------------------------------------------------------------------------------------------------------
++  GraphQL API
++  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
++  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
++  Payment Integration (Stripe)
++  Security (Rate limiting, Input validation, Password hashing)
++  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
+
+---------------------------------------------------------------------------------------------------------------------------
+ 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
