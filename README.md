@@ -1,9 +1,11 @@
 ## Table of Contents
-- # Overview
-- # TechStack
-- # Core Functions 
-- # UI
-- # Set up and install
+-  Overview & Key Features
+-  TechStack
+-  Core Functions
+-  UseCase
+-  Database Design (Mysql)
+-  UI
+-  Set up and install
 
 ----------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +25,15 @@ Comments: Customers can post comments on product detail pages. Additionally, the
 
 Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot.
 
+# Key Features
+
++  GraphQL API
++  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
++  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
++  Payment Integration (Stripe)
++  Security (Rate limiting, Input validation, Password hashing)
++  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
+  
 -----------------------------------------------------------------------------------------------------------------------------
 # Tech Stack
 Frontend: Nextjs(React), React Router, Axios, Tailwind/CSS
@@ -33,17 +44,6 @@ Realtime: Socket.IO
 Payments: Stripe
 Notifications: Resend (Email)
 Containerization: Docker Compose
-
-
---------------------------------------------------------------------------------------------------------------------------
-+  GraphQL API
-+  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
-+  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
-+  Payment Integration (Stripe)
-+  Security (Rate limiting, Input validation, Password hashing)
-+  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
-
----------------------------------------------------------------------------------------------------------------------------
  
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,14 +106,10 @@ Containerization: Docker Compose
   ![HomePage](./design/EmailResetPassword.png)
 
 
-
 + Admin
 ![HomePage](./design/admin1.png)
 
 ![HomePage](./design/admin2.png)  
-
-
-
 
 
 ## Technology
