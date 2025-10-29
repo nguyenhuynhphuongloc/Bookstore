@@ -12,6 +12,7 @@ jobs:
 
     strategy:
       matrix:
+<<<<<<< HEAD
         node-version: [18.x] # Bạn có thể thêm 20.x nếu muốn test thêm version
 
     steps:
@@ -41,3 +42,18 @@ jobs:
       - name: Run tests
         working-directory: frontend
         run: npm test
+=======
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm test
+>>>>>>> 86a19c8a543d5d11abd8c0b6f419eadf7142edac
