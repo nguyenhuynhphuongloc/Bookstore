@@ -1,17 +1,15 @@
-## Project : Online Bookstore Web (solo project)
+## Table of Contents
+-  Overview & Key Features
+-  TechStack
+-  Core Functions
+-  UseCase
+-  Database Design (Mysql)
+-  UI
+-  Set up and install
 
-- I want to apply my knowledge to build a modern web application for buying and managing books online. It provides seamless experiences for both customers and administrators with a flexible GraphQL API powering the backend.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Key features in my project
-+  GraphQL API
-+  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
-+  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
-+  Payment Integration (Stripe)
-+  Security (Rate limiting, Input validation, Password hashing)
-+  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
-
----------------------------------------------------------------------------------------------------------------------------
-## Bussines Context
+# Overview
 
 The Bookstore Website provides the following core functionalities: Product Catalog, Shopping Cart, Payment Processing, Comments, Notifications, and Access Control. 
 
@@ -25,7 +23,28 @@ Notification: When client complete successful payment process, system can inform
 
 Comments: Customers can post comments on product detail pages. Additionally, they can like and reply to existing comments, creating an interactive and engaging community experience. 
 
-Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot. 
+Access Control: Both customers and administrators can login and register to the system. After logging in, customers are redirected to the homepage, while administrators gain access to the dedicated Admin Dashboard for managing products, orders, and system data. Moreover, buyer and admin can reset password through email if they forgot.
+
+# Key Features
+
++  GraphQL API
++  Apply to machine learning to analyze sentiment of buyers such as positive or negative classification
++  Caching,Database Optimization (Indexes, Relations with TypeORM/Postgres)
++  Payment Integration (Stripe)
++  Security (Rate limiting, Input validation, Password hashing)
++  Authentication & Authorization (Outh2,JWT, Role-based access: User/Admin)
+  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Tech Stack
+Frontend: Nextjs(React), React Router, Axios, Tailwind/CSS
+Backend: Node.js, Express.js, Nestjs
+Database: MYSQL
+Auth: JWT & bcrypt & OUTH2
+Realtime: Socket.IO
+Payments: Stripe
+Notifications: Resend (Email)
+Containerization: Docker Compose
+ 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -87,14 +106,10 @@ Access Control: Both customers and administrators can login and register to the 
   ![HomePage](./design/EmailResetPassword.png)
 
 
-
 + Admin
 ![HomePage](./design/admin1.png)
 
 ![HomePage](./design/admin2.png)  
-
-
-
 
 
 ## Technology
