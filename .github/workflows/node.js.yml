@@ -1,31 +1,43 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Frontend CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  build:
-
+  build-frontend:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x] # Bạn có thể thêm 20.x nếu muốn test thêm version
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      # 1️⃣ Clone code từ repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Cài đúng Node.js version và bật cache npm
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json  # 💡 CHỈ RÕ FILE LOCK TRONG FRONTEND
+
+      # 3️⃣ Cài dependencies trong thư mục frontend
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      # 4️⃣ Build project (nếu có script build)
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build --if-present
+
+      # 5️⃣ Chạy test (nếu có script test)
+      - name: Run tests
+        working-directory: frontend
+        run: npm test
