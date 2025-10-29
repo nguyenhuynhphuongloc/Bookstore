@@ -5,6 +5,17 @@ export class LoginDto {
     @IsNotEmpty()
     email: string;
 
+  
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+}
+
+export class AdminLogin {
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
     @IsString()
     @IsNotEmpty()
     username: string;

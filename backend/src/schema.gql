@@ -53,18 +53,11 @@ type CartItem {
   bookId: Int!
 }
 
-type Inventory {
-  id: ID!
-  book: Book!
-  quantity: Int!
-  location: String!
-}
-
 type Book {
   id: ID!
   title: String!
   subtitle: String
-  authors: String!
+  authors: String
   categories: String
   thumbnail: String
   description: String
@@ -74,8 +67,21 @@ type Book {
   ratings_count: Int
   price: Float!
   id_stripe: String
-  inventories: [Inventory!]
+  inventory: Int
   comments: [Comment!]
+}
+
+type Order {
+  id: ID!
+  user_email: String!
+  totalAmount: Float!
+  stripePaymentId: String!
+  status: String!
+  orderStatus: String!
+  paymentIntentId: String
+  refundReason: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type PaginatedBooks {
@@ -94,6 +100,13 @@ type GetPaginatedBooks {
 
 type PaginatedUsers {
   users: [User!]!
+  total: Int!
+  page: Int!
+  limit: Int!
+}
+
+type PaginatedOrders {
+  orders: [Order!]!
   total: Int!
   page: Int!
   limit: Int!
@@ -123,6 +136,9 @@ type Query {
   countNotifications(userId: String!): Int!
   getCommentsByBook(bookId: String!, skip: Int! = 0, take: Int! = 4): [Comment!]!
   replies(commentId: String!): [Comment!]!
+  orders: [Order!]!
+  getAllOrders(page: Int! = 1, limit: Int! = 10): PaginatedOrders!
+  order(id: Int!): Order!
 }
 
 input PaginationInput {
@@ -144,6 +160,9 @@ type Mutation {
   updateComment(updateCommentInput: UpdateCommentInput!): Boolean!
   removeComment(id: String!): Comment!
   likeComment(commentId: String!, userId: String!): Comment!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+  removeOrder(id: Int!): Order!
 }
 
 input CreateUserDto {
@@ -153,9 +172,9 @@ input CreateUserDto {
 }
 
 input CreateBookInput {
-  title: String!
+  title: String
   subtitle: String
-  authors: String!
+  authors: String
   categories: String
   thumbnail: String
   description: String
@@ -164,6 +183,7 @@ input CreateBookInput {
   num_pages: Int
   ratings_count: Int
   price: Float
+  inventory: Int
 }
 
 input UpdateBookInput {
@@ -178,6 +198,7 @@ input UpdateBookInput {
   num_pages: Int
   ratings_count: Int
   price: Float
+  inventory: Int
   isbn10: Int!
 }
 
@@ -202,4 +223,20 @@ input UpdateCommentInput {
   parentId: String
   id: String!
   likes: Int!
+}
+
+input CreateOrderInput {
+  user_email: String!
+  totalAmount: Float!
+  stripePaymentId: String!
+}
+
+input UpdateOrderInput {
+  user_email: String
+  totalAmount: Float
+  stripePaymentId: String
+  id: String!
+
+  """Trạng thái của đơn hàng"""
+  status: String
 }

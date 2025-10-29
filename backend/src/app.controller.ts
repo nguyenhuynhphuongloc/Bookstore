@@ -8,14 +8,9 @@ export class AppController {
     private readonly appService: AppService
   ) { }
 
-  @Post()
-  async trackSearch(@Body() body: any) {
+ 
 
-    const { userId, searchTerm } = body;
-
-    await this.appService.saveSearch(userId, searchTerm);
-
-    return { success: true, message: 'Search saved successfully' };
+  async ChatBox(){
     
   }
 

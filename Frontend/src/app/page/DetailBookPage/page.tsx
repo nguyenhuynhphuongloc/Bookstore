@@ -3,9 +3,7 @@ import { ADD_CART_ITEM, GET_CART_BY_USER, GETBook } from "@/app/graphQL/queries"
 import { GetBookData } from "@/app/interfaces/Books.interface";
 import Footer from "@/Shared/Footer/page";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import Navigation from "@/app/utils/function-natigation";
 import { useEffect, useState } from "react";
 import { getSession } from "@/lib/session";
 import { GetCartData } from "@/app/interfaces/cart.interface";
@@ -13,11 +11,18 @@ import { Session } from "@/app/interfaces/session.interface";
 import Navbar from "@/app/page/HomePage/components/NavBar/page";
 import { RatingStars } from "@/app/page/DetailBookPage/functions/ratingStart";
 import CommentSection from "@/app/page/DetailBookPage/components/Comment_section";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 export default function BookDetailPage() {
 
     const searchParams = useSearchParams();
+
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push(`/page/CartPage`);
+    };
 
     const bookId = searchParams.get("id");
 
@@ -79,9 +84,26 @@ export default function BookDetailPage() {
                     <div className="mt-6 flex gap-4">
                         <button
                             className="bg-[#DB4444] text-white font-bold py-2 px-6 rounded-md mt-4 w-fit cursor-pointer"
-                            onClick={() => Navigation("/page/CartPage")}
+                            onClick={async () => {
+                                try {
+                                    await addCartItem({
+                                        variables: {
+                                            cartId: cartId,
+                                            userId: session?.user?.id,
+                                            bookId: bookId,
+                                            quantity: 1,
+                                        },
+                                    });
+
+                                    alert("Thêm vào giỏ hàng thành công");
+                                    router.push('/page/CartPage')
+                                } catch (err) {
+                                    console.error(err);
+                                    alert("Thêm vào giỏ hàng thất bại!");
+                                }
+                            }}
                         >
-                            MUA NGAY
+                            Shop Now
                         </button>
 
                         <button
@@ -121,9 +143,7 @@ export default function BookDetailPage() {
                             ${data.book.price}.00
                         </p>
 
-                        <div className="text-lg text-yellow-600  flex items-center">
-                            <RatingStars rating={data.book.average_rating} />
-                        </div>
+                    
                     </div>
 
 

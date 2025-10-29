@@ -5,7 +5,6 @@ import {  GetCartData } from "@/app/interfaces/cart.interface"
 import CartNavbar from "@/app/page/CartPage/navbar-cartpage"
 import { useQuery } from "@apollo/client/react"
 import { useEffect, useState } from "react"
-import { FaTimes } from "react-icons/fa"
 import { getSession } from "@/lib/session"
 import Image from "next/image"
 import { Session } from "@/app/interfaces/session.interface"
@@ -212,7 +211,7 @@ export default function CartPage() {
                         </tbody>
                     </table>
 
-                    ư
+                    
                     <div className="mt-8 max-w-md ml-auto bg-gray-50 p-6 rounded-lg shadow">
                         <h2 className="text-xl font-semibold mb-4 text-[#2F70AF]">Cart Totals</h2>
                         <div className="flex justify-between mb-2">

@@ -1,26 +1,26 @@
 import { ObjectType, Field, Int, Float, ID } from '@nestjs/graphql';
 import { CartItem } from 'src/modules/cart/entities/cart.items';
-import { Inventory } from 'src/modules/inventory/entities/inventory.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
 import { Comment } from 'src/modules/comment/entities/comment.entity';
 @ObjectType()
 @Entity('books')
 export class Book {
+
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Field(() => String)
-  @Column({ type: 'text' }) 
+  @Column({ type: 'text' })
   title: string;
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   subtitle?: string;
 
-  @Field(() => String)
-  @Column({ type: 'text' }) 
-  authors: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'text', nullable: true})
+  authors?: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'text', nullable: true })
@@ -59,14 +59,16 @@ export class Book {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'varchar', nullable: true })
-  id_stripe?: string; 
+  id_stripe?: string;
 
 
-  @Field(() => [Inventory], { nullable: true })
-  @OneToOne(() => Inventory, (inventory) => inventory.book)
-  inventories: Inventory;
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  inventory?: number;
+
 
   @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, (comment) => comment.book, { cascade: true })
   comments?: Comment[];
+  
 }

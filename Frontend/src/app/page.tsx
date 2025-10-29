@@ -8,6 +8,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CartPage from "@/app/page/CartPage/page";
 
 export default function App() {
+
+
+   
   return (
     <div className="h-screen">
       <BrowserRouter>

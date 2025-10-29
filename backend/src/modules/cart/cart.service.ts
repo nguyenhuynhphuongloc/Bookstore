@@ -89,15 +89,9 @@ export class CartService {
   async createCart(userId: string): Promise<Cart> {
 
     const user = await this.userRepo.findOne({ where: { id: userId } });
+
     if (!user) {
       throw new NotFoundException('User not found');
-    }
-
-    const existingCart = await this.cartRepo.findOne({
-      where: { user: { id: userId } },
-    });
-    if (existingCart) {
-      return existingCart;
     }
 
     const cart = await this.cartRepo.create({

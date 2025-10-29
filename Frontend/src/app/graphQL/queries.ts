@@ -258,3 +258,40 @@ export const GET_ALL_USERS = gql`
   }
 `;
 
+
+
+export const CREATE_BOOK = gql`
+  mutation CreateBook($createBookInput: CreateBookInput!) {
+    createBook(createBookInput: $createBookInput) {
+      id
+      thumbnail
+      title
+      description
+      price
+      inventory
+      authors
+    }
+  }
+`;
+
+
+
+export const GET_ALL_ORDERS = gql`
+  query GetAllOrders($page: Int!, $limit: Int!) {
+    getAllOrders(page: $page, limit: $limit) {
+      orders {
+        id
+        user_email
+        totalAmount
+        status
+        createdAt
+        stripePaymentId
+      }
+      total
+      page
+      limit
+    }
+  }
+`;
+
+

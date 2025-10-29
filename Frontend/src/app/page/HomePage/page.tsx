@@ -22,15 +22,16 @@ export default function Homepage() {
 
     const [loading, setLoading] = useState(true);
 
-    const fetchSession = async () => {
-        const session = await getSession();
-        setSession(session);
-        setLoading(false);
-    };
+   
 
     useEffect(() => {
-        fetchSession();
+        (async () => {
+            const session = await getSession();
+            setSession(session);
+            setLoading(false);
+        })();
     }, []);
+
 
 
     const { data, error } = useQuery<GetTopRatedBooksData>(GET_TOP_RATED_BOOKS, {

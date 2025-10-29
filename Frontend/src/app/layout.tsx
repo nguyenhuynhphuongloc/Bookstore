@@ -35,9 +35,7 @@ export default function RootLayout({
     <html className="h-screen bg-white" lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ApolloProvider client={client}>
-          
             {children}
-          
         </ApolloProvider>
       </body>
     </html>

@@ -40,7 +40,6 @@ export class AuthService {
 
     @Inject(jwtConfig.KEY) private jwtConfigrulation: ConfigType<typeof jwtConfig>,
 
-
     @Inject(refreshjwtConfig.KEY) private refreshJwtConfig: ConfigType<typeof refreshjwtConfig>,
 
     private readonly cartService: CartService,
@@ -75,7 +74,7 @@ export class AuthService {
 
   }
 
-  async login(@Body() credentials: LoginDto, @Res({ passthrough: true }) res: Response) {
+  async login(@Body() credentials: LoginDto) {
 
     const { email, password } = credentials;
 
@@ -96,7 +95,6 @@ export class AuthService {
     if (!passwordMatch) throw new Error("Mật khẩu sai");
 
 
-
     return {
       user: {
         id: user.id,
@@ -106,6 +104,8 @@ export class AuthService {
       access_token: accessToken,
       refresh_token: refreshToken,
     };
+
+
 
   }
 
@@ -183,7 +183,12 @@ export class AuthService {
 
 
   async Register(registerDto: CreateAuthDto) {
-    return this.userService.register(registerDto)
+
+    const user = await this.userService.register(registerDto)
+
+
+    return { message: "Register updated successfully" };
+
   }
 
 
@@ -353,5 +358,36 @@ export class AuthService {
     return { message: 'Postcode verified successfully' };
   }
 
+  async AdminLogin(credentials) {
+
+    const { email, password } = credentials;
+
+    const user = await this.userRepo.findOne({ where: { email } });
+
+    if (!user) throw new UnauthorizedException("User not found");
+
+    const { accessToken, refreshToken } = await this.generateToken(user.id);
+
+    const hashedRefreshToken = await hash(refreshToken);
+
+    await this.userService.updateHashedRefreshToken(user.id, hashedRefreshToken);
+
+    if (!user.id) throw new Error("User ID không tồn tại");
+
+    const passwordMatch = await comparePassword(password, user.password);
+
+    if (!passwordMatch) throw new Error("Mật khẩu sai");
+
+
+    return {
+      user: {
+        id: user.id,
+        name: user.username || null,
+        role: user.role
+      },
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    };
+  }
 
 }

@@ -22,7 +22,6 @@ import { logout } from "@/app/page/HomePage/functions/functions";
 
 export default function Navbar({ session }: { session: Session | null }) {
 
-  console.log(session)
 
   const router = useRouter();
   const bellRef = useRef<HTMLDivElement>(null);
@@ -53,7 +52,9 @@ export default function Navbar({ session }: { session: Session | null }) {
   }, []);
 
   const notifications = notificationsData?.getNotifications || [];
+
   const cartCount = cartData?.countCartItems || 0;
+
   const notificationCount = notificationData?.countNotifications ?? 0;
 
   return (
@@ -76,12 +77,12 @@ export default function Navbar({ session }: { session: Session | null }) {
           {session ? (
             <div className="flex items-center gap-6 mx-5" ref={bellRef}>
               <button
-                className="hover:bg-[#FB635D] p-2 rounded-full relative"
+                className="hover:bg-[#FB635D] p-2 rounded-full relative cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <FaBell size={22} />
+                <FaBell size={22} className="cursor-pointer"/>
                 {notificationCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full px-1">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full px-1 ">
                     {notificationCount}
                   </span>
                 )}
@@ -127,19 +128,19 @@ export default function Navbar({ session }: { session: Session | null }) {
               </button>
 
               <button
-                className="hover:bg-[#FB635D] p-2 rounded-full"
-                onClick={() => window.open("http://127.0.0.1:7861", "_blank")}
+                className="hover:bg-[#FB635D] p-2 rounded-full cursor-pointer"
+                onClick={() => router.push("/page/ChatBox")}
               >
-                <FaRobot size={22} />
+                <FaRobot size={22} className="cursor-pointer"/>
               </button>
 
               <button
-                className="hover:bg-[#FB635D] p-2 rounded-full relative"
+                className="hover:bg-[#FB635D] p-2 rounded-full relative cursor-pointer"
                 onClick={() => router.push("/page/CartPage")}
               >
-                <FaShoppingCart size={22} />
+                <FaShoppingCart size={22} className="cursor-pointer"/>
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-yellow-400 text-xs rounded-full px-1">
+                  <span className="absolute -top-1 -right-1 bg-yellow-400 text-xs rounded-full px-1 cursor-pointer">
                     {cartCount}
                   </span>
                 )}
@@ -170,9 +171,9 @@ export default function Navbar({ session }: { session: Session | null }) {
                         </li>
                         <li>
                           <button
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded"
-                            onClick={() => {
-                              logout(session.accessToken)
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded cursor-pointer"
+                            onClick={async() => {
+                              await logout(session.accessToken)
                               router.push("/page/LoginPage");
                             }}
                           >
@@ -186,7 +187,7 @@ export default function Navbar({ session }: { session: Session | null }) {
               </NavigationMenu>
             </div>
           ) : (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 cursor-pointer">
               <Link
                 href={process.env.LoginPage_URL || "/page/LoginPage"}
                 className="text-white hover:underline"
@@ -196,7 +197,7 @@ export default function Navbar({ session }: { session: Session | null }) {
 
               <Link
                 href={process.env.RegisterPage_URL || "/page/RegisterPage"}
-                className="text-white hover:underline"
+                  className="text-white hover:underline cursor-pointer"
               >
                 Register
               </Link>

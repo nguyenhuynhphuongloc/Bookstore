@@ -3,16 +3,15 @@ import { Column } from 'typeorm';
 
 @InputType()
 export class CreateBookInput {
-
-  @Field(() => String)
-  @Column({ type: 'text' })
-  title: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'text', nullable: true })
+  title?: string;
 
   @Field(() => String, { nullable: true })
   subtitle?: string;
 
-  @Field(() => String)
-  authors: string;
+  @Field(() => String, { nullable: true })
+  authors?: string;
 
   @Field(() => String, { nullable: true })
   categories?: string;
@@ -37,4 +36,8 @@ export class CreateBookInput {
 
   @Field(() => Float, { nullable: true })
   price?: number;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  inventory?: number;
 }

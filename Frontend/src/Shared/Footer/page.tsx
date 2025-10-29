@@ -3,49 +3,48 @@
 export default function Footer() {
   return (
     <footer>
-      <div className="bg-[#FB635D] text-white w-full">
+      <div className="bg-[#2F70AF] text-white w-full">
         <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-12 gap-6">
 
-          {/* Quick Links */}
+          {/* Liên kết nhanh */}
           <div className="col-span-4 space-y-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+              <h3 className="text-lg font-bold mb-4">Liên kết nhanh</h3>
               <ul className="space-y-2">
-                <li><a href="#shop" className="hover:underline">Shop Books</a></li>
-                <li><a href="#bestsellers" className="hover:underline">Best Sellers</a></li>
-                <li><a href="#categories" className="hover:underline">Categories</a></li>
-                <li><a href="#authors" className="hover:underline">Authors</a></li>
-                <li><a href="#careers" className="hover:underline">Careers</a></li>
-                <li><a href="#contact" className="hover:underline">Contact Us</a></li>
+                <li><a href="#courses" className="hover:underline">Khóa học</a></li>
+                <li><a href="#bestsellers" className="hover:underline">Tài liệu nổi bật</a></li>
+                <li><a href="#categories" className="hover:underline">Chuyên đề</a></li>
+                <li><a href="#teachers" className="hover:underline">Giáo viên</a></li>
+                <li><a href="#careers" className="hover:underline">Cơ hội việc làm</a></li>
+                <li><a href="#contact" className="hover:underline">Liên hệ</a></li>
               </ul>
             </div>
           </div>
 
-          {/* About Company */}
+          {/* Giới thiệu trung tâm */}
           <div className="col-span-8 space-y-6">
             <div className="space-y-2">
-              <h3 className="text-lg font-bold">About BookStore</h3>
+              <h3 className="text-lg font-bold">Về IELTS Center</h3>
               <p className="text-sm leading-relaxed">
-                BookStore is a leading online book-selling platform, offering thousands of titles across
-                literature, economics, self-development, business, and children’s books.
-                With the mission of spreading knowledge, we connect readers with the vast world of books.
+                IELTS Center là trung tâm luyện thi IELTS hàng đầu, cung cấp đa dạng khóa học và tài liệu
+                từ cơ bản đến nâng cao. Với sứ mệnh giúp học viên đạt điểm cao, chúng tôi kết nối bạn
+                với thế giới học thuật quốc tế.
               </p>
             </div>
 
-            {/* Introduction */}
+            {/* Sứ mệnh */}
             <div className="space-y-2">
-              <h3 className="text-lg font-bold">Our Mission</h3>
+              <h3 className="text-lg font-bold">Sứ mệnh của chúng tôi</h3>
               <p className="text-sm leading-relaxed">
-                We believe books are the key to unlocking knowledge and opportunities.
-                BookStore is committed to delivering a convenient shopping experience,
-                fast delivery services, and attractive promotions so that everyone can
-                own the books they love.
+                Chúng tôi tin rằng IELTS là chìa khóa mở ra nhiều cơ hội học tập và nghề nghiệp.
+                IELTS Center cam kết mang đến trải nghiệm học tập tiện lợi, đội ngũ giáo viên chất lượng,
+                và nhiều ưu đãi hấp dẫn để mỗi học viên đều có thể đạt mục tiêu điểm số của mình.
               </p>
             </div>
 
-            {/* Contact */}
+            {/* Liên hệ */}
             <div>
-              <h3 className="text-lg font-bold mb-2">Contact</h3>
+              <h3 className="text-lg font-bold mb-2">Liên hệ</h3>
               <div className="flex space-x-4">
                 <a
                   href="https://www.facebook.com/"
@@ -61,12 +60,12 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Copyright */}
+            {/* Bản quyền */}
             <div className="text-sm leading-relaxed space-y-4 pt-4">
-              <p>© 2025 <span className="font-bold">BookStore</span>. All rights reserved.</p>
+              <p>© 2025 <span className="font-bold">IELTS Center</span>. Bảo lưu mọi quyền.</p>
               <p>
-                All book titles, covers, and related content are the property of their respective publishers and authors.
-                BookStore is an independent retailer and is not affiliated with any official publishing organization.
+                Tất cả tài liệu học tập, hình ảnh và nội dung liên quan thuộc quyền sở hữu của trung tâm.
+                IELTS Center là đơn vị đào tạo độc lập, không liên kết trực tiếp với bất kỳ tổ chức quốc tế nào.
               </p>
             </div>
           </div>

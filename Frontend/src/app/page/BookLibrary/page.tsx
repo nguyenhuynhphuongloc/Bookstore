@@ -73,6 +73,7 @@ export default function Library() {
 
     return (
         <div className="bg-white">
+
             <LibraryNavbar
                 session={session}
                 onSearch={(term) => {
@@ -118,7 +119,7 @@ export default function Library() {
                 </div>
 
                 <div className="w-full max-w-6xl bg-white shadow-md rounded-lg p-6 ml-34 mr-32 border-2">
-                    <h2 className="text-xl font-bold mb-4 text-[#294563]">Kho sách</h2>
+                    <h2 className="text-xl font-bold mb-4 text-[#294563]">Books</h2>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         {books.map((book) => (
                             <BookCard key={book.id} book={book} />
@@ -138,7 +139,7 @@ export default function Library() {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (page > 1) setPage((prev) => prev - 1);
-                                } } size={300}                            />
+                                }} size={300} />
                         </PaginationItem>
 
                         {Array.from({ length: 4 })
@@ -151,9 +152,9 @@ export default function Library() {
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setPage(p);
-                                        } }
+                                        }}
                                         className={`border border-gray-300 ${page === p
-                                            ? "bg-black text-white"
+                                            ? "bg-blue-950 text-white"
                                             : "bg-white text-black hover:bg-customBlue "}`} size={undefined}                                    >
                                         {p}
                                     </PaginationLink>
@@ -161,15 +162,18 @@ export default function Library() {
                             ))}
 
                         <PaginationItem>
+
                             <PaginationNext
                                 className="bg-blue-950 hover:bg-customBlue text-white border border-gray-300 w-[90px] h-8 p-2"
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (page < totalPages) setPage((prev) => prev + 1);
-                                } } size={undefined}                            />
+                                }} size={undefined} />
                         </PaginationItem>
+
                     </PaginationContent>
+
                 </Pagination>
             )}
         </div>

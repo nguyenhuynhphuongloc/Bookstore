@@ -12,18 +12,21 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { signInSchema } from "@/lib/type"
 import { FormTypeLogin } from "@/app/types/types"
 import { onSubmit } from "@/app/page/LoginPage/functions/login-submit-function"
+import { useRouter } from "next/navigation"
+import { z } from "zod"
 
 
 export function LoginForm() {
 
+    const router = useRouter();
+
+
     const form = useForm<FormTypeLogin>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
-            username: "",
             password: "",
             email: "",
         },
@@ -33,27 +36,35 @@ export function LoginForm() {
         delayError: 0,
     })
 
+    const handleLogin = async (values: z.infer<typeof signInSchema>) => {
+        console.log("🔹 Form submitted:", values);
+        return await onSubmit(values, router);
+    };
+
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-shrink-0 w-[600px] border-gray-300 rounded-lg p-6 bg-white ">
+            <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-6 flex-shrink-0 w-[600px] border-gray-300 rounded-lg p-6 bg-white border-2">
                 <div className="flex justify-center">
-                    <span className="text-white justify-center text-4xl font-sans">Login</span>
+                    <span className="text-[#294563] justify-center text-3xl font-sans">Login</span>
                 </div>
+
 
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-bold text-[#294563] p-2">Username</FormLabel>
+                            <FormLabel className="font-bold text-[#294563] p-2">Email</FormLabel>
                             <FormControl>
-                                <Input className="text-black" placeholder="Enter your username" autoComplete="off" {...field} />
+                                <Input className="text-black" placeholder="Enter your email" autoComplete="off" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+
+                
 
                 <FormField
                     control={form.control}
@@ -69,19 +80,6 @@ export function LoginForm() {
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="font-bold text-[#294563] p-2">Email</FormLabel>
-                            <FormControl>
-                                <Input className="text-black" placeholder="Enter your email" autoComplete="off" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
 
                 <Button className="!mt-5 w-full bg-[#2F70AF] text-white hover:bg-customBlue hover:shadow-none cursor-pointer" type="submit">
                     Login
@@ -112,7 +110,7 @@ export function LoginForm() {
 
                 <div className="flex justify-center">
                     <span className="text-[#294563]">Don’t have an account? </span>
-                    <Link href="/pages/register" className="ml-1">
+                    <Link href="/page/RegisterPage" className="ml-1">
                         <span className="text-[#294563] font-serif">Sign up now!</span>
                     </Link>
                 </div>

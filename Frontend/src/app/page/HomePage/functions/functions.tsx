@@ -17,11 +17,11 @@ export async function logout(accessToken: string) {
         if (!res.ok) {
             throw new Error("Logou");
         }
-
-        
-        deleteSession();
+         
+        await deleteSession();
 
         return true;
+        
     } catch (error) {
         console.error("Error during logout:", error);
         return false;

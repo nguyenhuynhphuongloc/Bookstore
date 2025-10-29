@@ -13,10 +13,11 @@ import { ConfigModule } from '@nestjs/config';
 import { PaymentModule } from 'src/modules/Payment/payment.module';
 import { NotificationModule } from 'src/modules/notification/notification.module';
 import { LoggerMiddleware } from 'src/middleware/Logging-middleware';
-import { SearchHistory } from 'src/entities/search-history';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CommentModule } from 'src/modules/comment/comment.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ChatModule } from 'src/chats/chat.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -47,10 +48,11 @@ import { ThrottlerModule } from '@nestjs/throttler';
     UserModule,
     BooksModule,
     MailModule,
+    ChatModule,
     PaymentModule,
     NotificationModule,
     CommentModule,
-    TypeOrmModule.forFeature([SearchHistory])
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

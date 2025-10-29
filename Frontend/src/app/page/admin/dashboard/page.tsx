@@ -107,24 +107,29 @@ export default function BarChartOne() {
                 <div className="mx-12">
                     <AdminNavbar />
                 </div>
-                
 
-                <div className="flex justify-center items-center">
-
-                    <div id="chartOne" className="w-[600px] mx-5 mt-24 border-1">
-                        <ReactApexChart
-                            options={options}
-                            series={series}
-                            type="bar"
-                            height={210}
-                        />
+                <div className="ml-24">
+                    <div className="text-blue-950 mt-12 mb-4 font-bold">
+                        DashBoard
                     </div>
+                    <div className="flex gap-3 ">
 
-                    <div id="LineOne" className="w-[600px] mx-4 mt-24 border-1">
-                        <LineChartOne />
+                        <div id="chartOne" className="w-[600px] border-1">
+                            <ReactApexChart
+                                options={options}
+                                series={series}
+                                type="bar"
+                                height={210}
+                            />
+                        </div>
+
+                        <div id="LineOne" className="w-[600px]  border-1">
+                            <LineChartOne />
+                        </div>
                     </div>
-
                 </div>
+                
+              
 
                 
             </div>

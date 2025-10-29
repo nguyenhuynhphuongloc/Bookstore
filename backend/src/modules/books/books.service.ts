@@ -6,7 +6,6 @@ import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
-import { PaginatedBooks, PaginationInput } from 'src/interfaces/pagnition.interface';
 @Injectable()
 export class BooksService {
   constructor(
@@ -16,7 +15,7 @@ export class BooksService {
 
   async create(createBookInput: CreateBookInput): Promise<Book> {
     const book = this.bookRepository.create(createBookInput);
-    return this.bookRepository.save(book);
+    return await this.bookRepository.save(book);
   }
 
 
@@ -50,7 +49,6 @@ export class BooksService {
     const [items, total] = await this.bookRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
-      relations: ['inventories'],
     });
 
     return {

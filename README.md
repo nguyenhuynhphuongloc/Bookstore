@@ -132,5 +132,8 @@ Fronted is building with NextJS. You need to open the folder "fronted" and run '
 
 ![HomePage](./design/fronted.png)
 
+stripe login
+stripe listen --forward-to localhost:8000/payment/webhook
+
 
 

@@ -12,7 +12,6 @@ export default function AdminTestPage() {
             <div className="w-80">
                 <AppSidebar />
             </div>
-    
             <AdminNavbar />
         </div>
      

@@ -14,10 +14,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { RegisterSchema } from "@/lib/zod"
 import 'react-toastify/dist/ReactToastify.css';
-import { onSubmit } from "@/app/page/RegisterPage/functions/submit-register"
 import { FormTypeRegister } from "@/app/types/types"
+import { useRegisterHandler } from "@/app/page/RegisterPage/functions/submit-register"
 
 export function RegisterForm() {
+
+    const { onSubmit } = useRegisterHandler();
 
     const form = useForm<FormTypeRegister>({
         resolver: zodResolver(RegisterSchema),
@@ -35,7 +37,7 @@ export function RegisterForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-shrink-0 w-[600px] border border-gray-300 rounded-lg p-6 bg-white ">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-shrink-0 w-[600px] border-2 border-gray-300 rounded-lg p-6 bg-white ">
                 <div className="flex justify-center">
                     <span className="text-[#294563] justify-center text-4xl font-sans">Create Account</span>
                 </div>

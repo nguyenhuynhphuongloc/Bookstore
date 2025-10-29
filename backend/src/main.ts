@@ -6,7 +6,6 @@ import * as bodyParser from 'body-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
   app.enableCors({
     origin: ['http://localhost:3000'], 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
@@ -20,7 +19,6 @@ async function bootstrap() {
   '/payment/webhook',
   bodyParser.raw({ type: 'application/json' })
 );
-
 
   await app.listen(8000);
   
