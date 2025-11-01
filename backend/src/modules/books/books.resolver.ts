@@ -49,13 +49,6 @@ export class BooksResolver {
     return this.booksService.remove(isbn10);
   }
 
-  @Mutation(() => [Book])
-  async importBooksFromCSV(
-    @Args('filePath', { type: () => String }) filePath: string,
-  ) {
-    return await this.booksService.importFromCSV(filePath);
-  }
-
   @Query(() => [Book], { name: 'booksByCategoryName' })
   async findByCategory(
     @Args('categoryName', { type: () => String }) categoryName: string,

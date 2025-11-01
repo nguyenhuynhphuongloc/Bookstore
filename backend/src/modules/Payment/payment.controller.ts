@@ -131,11 +131,7 @@ export class PaymentController {
     return await this.paymentService.getProductByTitle(body.title)
   }
 
-  @Get('products/import')
-  async importProducts() {
-    const filePath = "C:/Users/ASUS/Documents/GitHub/Bookstore/book-strore/src/modules/books/books-3.csv";
-    return await this.paymentService.importProductsFromFile(filePath);
-  }
+ 
 
   @Post('webhook')
   async handleWebhook(@Req() req: Request, @Res() res: Response) {
@@ -210,6 +206,7 @@ export class PaymentController {
         }
 
         if (user) {
+
           await this.notificationService.sendNotification({
             userId: user.id,
             title: `Mã đơn hàng ${session.metadata.date}) đã thanh toán thành công.Đơn hàng sẽ được giao đến bạn trong thời gian sớm nhất`,
@@ -221,6 +218,7 @@ export class PaymentController {
             amount / 100,
             stripePaymentId,
           );
+          
         }
         break;
       }
@@ -240,10 +238,11 @@ export class PaymentController {
   }
 
   @Post('refund')
-  async refund(@Body() body: { paymentIntentId: string,reason?: string }) {
+  async refund(@Body() body: { paymentIntentId: string,reason?: string ,email: string}) {
     return await this.paymentService.refundPayment(
       body.paymentIntentId,
       body.reason as any,
+      body.email
     );
   }
 

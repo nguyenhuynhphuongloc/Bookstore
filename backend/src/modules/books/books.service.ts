@@ -5,7 +5,6 @@ import { Book } from './entities/book.entity';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import * as fs from 'fs';
-import * as csv from 'csv-parser';
 @Injectable()
 export class BooksService {
   constructor(
@@ -121,43 +120,7 @@ export class BooksService {
     return parseFloat((Math.random() * (max - min) + min).toFixed(2));
   }
 
-  async importFromCSV(filePath: string): Promise<Book[]> {
-    return new Promise((resolve, reject) => {
-      const results: Book[] = [];
-
-      fs.createReadStream(filePath)
-        .pipe(csv({ mapHeaders: ({ header }) => header.toLowerCase().trim() }))
-        .on('data', async (row) => {
-          try {
-            const input: CreateBookInput = {
-              title: row.title?.trim() || 'Untitled',
-              subtitle: row.subtitle || null,
-              authors: row.authors || 'Unknown',
-              categories: row.categories || null,
-              thumbnail: row.thumbnail || null,
-              description: row.description || null,
-              published_year: row.published_year ? Number(row.published_year) : undefined,
-              average_rating: row.average_rating ? Number(row.average_rating) : undefined,
-              num_pages: row.num_pages ? Number(row.num_pages) : undefined,
-              ratings_count: row.ratings_count ? Number(row.ratings_count) : undefined,
-              price: row.price ? Number(row.num_pages) : undefined,
-            };
-
-
-            const book = this.bookRepository.create(input);
-            const savedBook = await this.bookRepository.save(book);
-            results.push(savedBook);
-          } catch (err) {
-            console.error('Error saving row:', err);
-          }
-        })
-        .on('end', () => {
-          console.log('CSV file successfully processed ✅');
-          resolve(results);
-        })
-        .on('error', (err) => reject(err));
-    });
-  }
+  
 
 }
 
