@@ -48,8 +48,7 @@ export default function BookDetailContent() {
             { query: GET_CART_BY_USER, variables: { userId: session?.user?.id } },
         ],
     });
-
-    if (!session) return <div>Loading session...</div>;
+    
     if (loading) return <div>Loading book...</div>;
     if (error) return <div>Error: {error.message}</div>;
     if (!data) return <div>No book found</div>;
